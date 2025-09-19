@@ -1,3 +1,4 @@
+import 'package:e_commerce_app_superbase/views/auth/login/ui/register_view.dart';
 import 'package:e_commerce_app_superbase/views/splash/ui/splash_view.dart';
 import 'package:flutter/material.dart';
 

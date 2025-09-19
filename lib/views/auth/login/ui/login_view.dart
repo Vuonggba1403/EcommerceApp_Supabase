@@ -1,6 +1,9 @@
 import 'package:e_commerce_app_superbase/core/app_colors.dart';
-import 'package:e_commerce_app_superbase/core/widgets/custom_button.dart';
-import 'package:e_commerce_app_superbase/core/widgets/custom_textfield.dart';
+import 'package:e_commerce_app_superbase/views/auth/login/ui/forgot_view.dart';
+import 'package:e_commerce_app_superbase/views/auth/login/ui/widgets/custom_button.dart';
+import 'package:e_commerce_app_superbase/views/auth/login/ui/widgets/custom_textfield.dart';
+import 'package:e_commerce_app_superbase/core/loading_screen.dart';
+import 'package:e_commerce_app_superbase/views/auth/login/ui/register_view.dart';
 import 'package:flutter/material.dart';
 
 class LoginView extends StatelessWidget {
@@ -40,7 +43,9 @@ class LoginView extends StatelessWidget {
             ),
             SizedBox(height: 15),
             GestureDetector(
-              onTap: () {},
+              onTap: () {
+                loadingScreen(context, () => const ForgotView());
+              },
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
@@ -68,7 +73,8 @@ class LoginView extends StatelessWidget {
                 Text("Don't have an Account? "),
                 GestureDetector(
                   onTap: () {
-                    Text("Create One");
+                    // Text("Create One");
+                    loadingScreen(context, () => const RegisterView());
                   },
                   child: Text(
                     "Create One",

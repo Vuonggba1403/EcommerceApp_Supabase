@@ -23,7 +23,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
   @override
   void initState() {
     super.initState();
-    _obscure = widget.isPassword; // nếu là password thì mặc định che
+    _obscure = widget.isPassword;
   }
 
   @override
@@ -41,6 +41,10 @@ class _CustomTextFieldState extends State<CustomTextField> {
         filled: true,
         fillColor: AppColors.thirdColor,
         hintText: widget.hintText,
+        hintStyle: TextStyle(
+          color: Colors.grey.shade500,
+          fontFamily: "CircularStd",
+        ),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
           borderSide: BorderSide.none,
