@@ -4,6 +4,7 @@ import 'package:e_commerce_app_superbase/views/auth/login/ui/widgets/custom_butt
 import 'package:e_commerce_app_superbase/views/auth/login/ui/widgets/custom_textfield.dart';
 import 'package:e_commerce_app_superbase/core/loading_screen.dart';
 import 'package:e_commerce_app_superbase/views/auth/login/ui/register_view.dart';
+import 'package:e_commerce_app_superbase/views/auth/nav_bar/ui/main_home_view.dart';
 import 'package:flutter/material.dart';
 
 class LoginView extends StatelessWidget {
@@ -63,7 +64,9 @@ class LoginView extends StatelessWidget {
             SizedBox(height: 15),
             CustomButton(
               text: "Continue",
-              onPressed: () {},
+              onPressed: () {
+                loadingScreen(context, () => const MainHomeView());
+              },
               backgroundColor: AppColors.primaryColor,
               foregroundColor: Colors.white,
             ),
