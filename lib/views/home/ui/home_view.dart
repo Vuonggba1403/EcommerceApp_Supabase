@@ -1,7 +1,7 @@
 import 'package:e_commerce_app_superbase/core/app_colors.dart';
 import 'package:e_commerce_app_superbase/views/home/ui/widgets/categori_session.dart';
 import 'package:e_commerce_app_superbase/views/home/ui/widgets/search_textfield.dart';
-import 'package:e_commerce_app_superbase/common/custom_textfield.dart';
+import 'package:e_commerce_app_superbase/views/home/ui/widgets/top_selling_view.dart';
 import 'package:flutter/material.dart';
 
 class HomeView extends StatefulWidget {
@@ -14,85 +14,95 @@ class HomeView extends StatefulWidget {
 class _HomeViewState extends State<HomeView> {
   String selectedCategory = "Men";
   final categories = ["Men", "Women", "Kids"];
+
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+
     return Scaffold(
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 20.0),
-          child: Column(
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  // Avatar
-                  Container(
-                    padding: const EdgeInsets.all(2),
-                    decoration: BoxDecoration(
-                      color: Colors.black,
-                      shape: BoxShape.circle,
-                    ),
-                    child: const CircleAvatar(
-                      radius: 22,
-                      backgroundImage: AssetImage('assets/user_images.png'),
-                    ),
-                  ),
-                  //Drop menu
-                  Flexible(
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 12,
-                        vertical: 6,
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Avatar + Dropdown + Icon
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(2),
+                      decoration: const BoxDecoration(
+                        color: Colors.black,
+                        shape: BoxShape.circle,
                       ),
-                      decoration: BoxDecoration(
-                        color: Colors.grey.shade200,
-                        borderRadius: BorderRadius.circular(40),
+                      child: const CircleAvatar(
+                        radius: 22,
+                        backgroundImage: AssetImage('assets/user_images.png'),
                       ),
-                      child: DropdownButtonHideUnderline(
-                        child: DropdownButton<String>(
-                          // isExpanded: true,
-                          value: selectedCategory,
-                          items: categories.map((String item) {
-                            return DropdownMenuItem<String>(
-                              value: item,
-                              child: Text(
-                                item,
-                                style: const TextStyle(
-                                  fontWeight: FontWeight.bold,
+                    ),
+                    Flexible(
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 12,
+                          vertical: 6,
+                        ),
+                        decoration: BoxDecoration(
+                          color: Colors.grey.shade200,
+                          borderRadius: BorderRadius.circular(40),
+                        ),
+                        child: DropdownButtonHideUnderline(
+                          child: DropdownButton<String>(
+                            value: selectedCategory,
+                            items: categories.map((String item) {
+                              return DropdownMenuItem<String>(
+                                value: item,
+                                child: Text(
+                                  item,
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
-                              ),
-                            );
-                          }).toList(),
-                          onChanged: (value) {
-                            setState(() {
-                              selectedCategory = value!;
-                            });
-                          },
-                          icon: const Icon(Icons.keyboard_arrow_down),
+                              );
+                            }).toList(),
+                            onChanged: (value) {
+                              setState(() {
+                                selectedCategory = value!;
+                              });
+                            },
+                            icon: const Icon(Icons.keyboard_arrow_down),
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                  //Category icon
-                  Container(
-                    padding: const EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: AppColors.primaryColor,
+                    Container(
+                      padding: const EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: AppColors.primaryColor,
+                      ),
+                      child: const Icon(
+                        Icons.propane_tank_outlined,
+                        color: Colors.white,
+                      ),
                     ),
-                    child: Icon(
-                      Icons.propane_tank_outlined,
-                      color: Colors.white,
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 20),
-              SearchField(),
-              SizedBox(height: 20),
-              //Categpory session
-              CategorySession(),
-            ],
+                  ],
+                ),
+
+                SizedBox(height: size.height * 0.03),
+                //Search
+                const SearchField(),
+                SizedBox(height: size.height * 0.03),
+
+                // Category session
+                const CategorySession(),
+                SizedBox(height: size.height * 0.03),
+
+                // Top selling
+                const TopSellingView(),
+              ],
+            ),
           ),
         ),
       ),
