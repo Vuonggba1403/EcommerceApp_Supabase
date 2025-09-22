@@ -1,6 +1,6 @@
 import 'package:e_commerce_app_superbase/core/app_colors.dart';
-import 'package:e_commerce_app_superbase/views/auth/login/ui/widgets/custom_button.dart';
-import 'package:e_commerce_app_superbase/views/auth/login/ui/widgets/custom_textfield.dart';
+import 'package:e_commerce_app_superbase/widgets/custom_button.dart';
+import 'package:e_commerce_app_superbase/widgets/custom_textfield.dart';
 import 'package:e_commerce_app_superbase/core/loading_screen.dart';
 import 'package:e_commerce_app_superbase/views/auth/login/ui/login_view.dart';
 import 'package:flutter/material.dart';

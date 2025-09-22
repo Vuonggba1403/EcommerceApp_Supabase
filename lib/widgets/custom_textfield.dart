@@ -5,12 +5,14 @@ class CustomTextField extends StatefulWidget {
   final String hintText;
   final TextInputType keyboardType;
   final bool isPassword;
+  final Icon prefixIcon;
 
   const CustomTextField({
     super.key,
     required this.hintText,
     required this.keyboardType,
-    this.isPassword = false, // mặc định không phải password
+    this.isPassword = false,
+    this.prefixIcon = const Icon(Icons.person),
   });
 
   @override
@@ -49,7 +51,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
           borderRadius: BorderRadius.circular(10),
           borderSide: BorderSide.none,
         ),
-
+        prefixIcon: widget.prefixIcon,
         suffixIcon: widget.isPassword
             ? IconButton(
                 icon: Icon(_obscure ? Icons.visibility_off : Icons.visibility),
