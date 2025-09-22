@@ -17,7 +17,27 @@ class OurMarket extends StatelessWidget {
     return MaterialApp(
       title: "Our Market",
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(useMaterial3: true),
+      theme: ThemeData(
+        useMaterial3: true,
+        fontFamily: "CircularStd",
+        textTheme: const TextTheme(
+          displayLarge: TextStyle(fontSize: 15),
+          displayMedium: TextStyle(fontSize: 15),
+          displaySmall: TextStyle(fontSize: 15),
+          headlineLarge: TextStyle(fontSize: 15),
+          headlineMedium: TextStyle(fontSize: 15),
+          headlineSmall: TextStyle(fontSize: 15),
+          titleLarge: TextStyle(fontSize: 15),
+          titleMedium: TextStyle(fontSize: 15),
+          titleSmall: TextStyle(fontSize: 15),
+          bodyLarge: TextStyle(fontSize: 15),
+          bodyMedium: TextStyle(fontSize: 15),
+          bodySmall: TextStyle(fontSize: 15),
+          labelLarge: TextStyle(fontSize: 15),
+          labelMedium: TextStyle(fontSize: 15),
+          labelSmall: TextStyle(fontSize: 15),
+        ),
+      ),
       home: HomeView(),
     );
   }

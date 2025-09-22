@@ -1,8 +1,8 @@
-import 'package:e_commerce_app_superbase/widgets/custom_textfield.dart';
+import 'package:e_commerce_app_superbase/common/custom_textfield.dart';
 import 'package:flutter/material.dart';
 
-class CustomSearchField extends StatelessWidget {
-  const CustomSearchField({super.key});
+class SearchField extends StatelessWidget {
+  const SearchField({super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -1,7 +1,7 @@
 import 'package:e_commerce_app_superbase/core/app_colors.dart';
 import 'package:e_commerce_app_superbase/views/auth/login/ui/forgot_view.dart';
-import 'package:e_commerce_app_superbase/widgets/custom_button.dart';
-import 'package:e_commerce_app_superbase/widgets/custom_textfield.dart';
+import 'package:e_commerce_app_superbase/common/custom_button.dart';
+import 'package:e_commerce_app_superbase/common/custom_textfield.dart';
 import 'package:e_commerce_app_superbase/core/loading_screen.dart';
 import 'package:e_commerce_app_superbase/views/auth/login/ui/register_view.dart';
 import 'package:e_commerce_app_superbase/views/auth/nav_bar/ui/main_home_view.dart';

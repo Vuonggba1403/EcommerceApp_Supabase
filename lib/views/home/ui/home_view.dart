@@ -1,6 +1,7 @@
 import 'package:e_commerce_app_superbase/core/app_colors.dart';
-import 'package:e_commerce_app_superbase/core/components/custom_search_textfield.dart';
-import 'package:e_commerce_app_superbase/widgets/custom_textfield.dart';
+import 'package:e_commerce_app_superbase/views/home/ui/widgets/categori_session.dart';
+import 'package:e_commerce_app_superbase/views/home/ui/widgets/search_textfield.dart';
+import 'package:e_commerce_app_superbase/common/custom_textfield.dart';
 import 'package:flutter/material.dart';
 
 class HomeView extends StatefulWidget {
@@ -87,7 +88,10 @@ class _HomeViewState extends State<HomeView> {
                 ],
               ),
               const SizedBox(height: 20),
-              CustomSearchField(),
+              SearchField(),
+              SizedBox(height: 20),
+              //Categpory session
+              CategorySession(),
             ],
           ),
         ),
