@@ -55,11 +55,10 @@ class _MainHomeViewState extends State<MainHomeView> {
                     vertical: 12,
                   ),
                   tabBorderRadius: 20,
-                  tabMargin: const EdgeInsets.symmetric(horizontal: 6),
+                  tabMargin: const EdgeInsets.symmetric(horizontal: 4),
 
-                  // màu sắc
-                  color: Colors.grey[600], // icon chưa active
-                  activeColor: Colors.white, // icon + text khi active
+                  color: Colors.grey[600],
+                  activeColor: Colors.white,
                   textStyle: const TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.w600,
@@ -69,10 +68,7 @@ class _MainHomeViewState extends State<MainHomeView> {
                   tabBackgroundGradient: const LinearGradient(
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
-                    colors: [
-                      Color(0xFF9CECFB), // xanh nhạt
-                      AppColors.primaryColor, // xanh đậm hơn
-                    ],
+                    colors: [Color(0xFF9CECFB), AppColors.primaryColor],
                   ),
 
                   tabs: const [

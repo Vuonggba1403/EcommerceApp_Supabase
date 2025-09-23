@@ -38,7 +38,7 @@ class OurMarket extends StatelessWidget {
           labelSmall: TextStyle(fontSize: 15),
         ),
       ),
-      home: HomeView(),
+      home: MainHomeView(),
     );
   }
 }
