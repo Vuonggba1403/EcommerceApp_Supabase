@@ -5,7 +5,7 @@ import 'package:e_commerce_app_superbase/views/auth/nav_bar/logic/cubit/nav_bar_
 import 'package:e_commerce_app_superbase/views/favorite/ui/favorite_view.dart';
 import 'package:e_commerce_app_superbase/views/home/ui/home_view.dart';
 import 'package:e_commerce_app_superbase/views/profiles/ui/profile_view.dart';
-import 'package:e_commerce_app_superbase/views/search/ui/search_view.dart';
+import 'package:e_commerce_app_superbase/views/cart/ui/cart_view.dart';
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -15,7 +15,7 @@ class MainHomeView extends StatefulWidget {
   final List<Widget> views = const [
     HomeView(),
     FavoriteView(),
-    SearchView(),
+    CartView(),
     ProfileView(),
   ];
 
@@ -39,7 +39,7 @@ class _MainHomeViewState extends State<MainHomeView> {
               child: Padding(
                 padding: const EdgeInsets.symmetric(
                   vertical: 8.0,
-                  horizontal: 15,
+                  horizontal: 9,
                 ),
                 child: GNav(
                   onTabChange: (index) {
@@ -74,7 +74,7 @@ class _MainHomeViewState extends State<MainHomeView> {
                   tabs: const [
                     GButton(icon: Icons.home, text: 'Home'),
                     GButton(icon: Icons.favorite_border, text: 'Likes'),
-                    GButton(icon: Icons.search, text: 'Search'),
+                    GButton(icon: Icons.shopping_bag_outlined, text: 'Cart'),
                     GButton(icon: Icons.person, text: 'Profile'),
                   ],
                 ),

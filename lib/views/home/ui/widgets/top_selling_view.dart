@@ -34,11 +34,11 @@ class TopSellingView extends StatelessWidget {
                 width: size.width * 0.4,
                 margin: const EdgeInsets.symmetric(horizontal: 8.0),
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: const Color.fromARGB(255, 195, 194, 194),
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  // crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     // Product Image + Discount Tag
                     Padding(
