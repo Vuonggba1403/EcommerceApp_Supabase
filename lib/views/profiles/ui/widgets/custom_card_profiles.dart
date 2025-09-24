@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class CardProfiles extends StatelessWidget {
-  const CardProfiles({super.key, required this.text});
+class CustomCardProfiles extends StatelessWidget {
+  const CustomCardProfiles({super.key, required this.text});
   final String text;
 
   @override

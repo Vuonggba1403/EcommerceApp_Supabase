@@ -1,4 +1,4 @@
-import 'package:e_commerce_app_superbase/views/profiles/ui/widgets/card_profiles.dart';
+import 'package:e_commerce_app_superbase/views/profiles/ui/widgets/custom_card_profiles.dart';
 import 'package:flutter/material.dart';
 
 class ProfileView extends StatelessWidget {
@@ -56,15 +56,15 @@ class ProfileView extends StatelessWidget {
                   ),
                 ),
                 SizedBox(height: size.height * 0.01),
-                CardProfiles(text: "Address"),
+                CustomCardProfiles(text: "Address"),
                 SizedBox(height: size.height * 0.01),
-                CardProfiles(text: "Wishlist"),
+                CustomCardProfiles(text: "Wishlist"),
                 SizedBox(height: size.height * 0.01),
-                CardProfiles(text: "Payment"),
+                CustomCardProfiles(text: "Payment"),
                 SizedBox(height: size.height * 0.01),
-                CardProfiles(text: "Help"),
+                CustomCardProfiles(text: "Help"),
                 SizedBox(height: size.height * 0.01),
-                CardProfiles(text: "Support"),
+                CustomCardProfiles(text: "Support"),
                 SizedBox(height: size.height * 0.01),
                 ElevatedButton(
                   onPressed: () {},
