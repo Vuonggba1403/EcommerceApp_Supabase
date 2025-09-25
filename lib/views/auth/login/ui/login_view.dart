@@ -1,137 +1,193 @@
+import 'package:e_commerce_app_superbase/common/custom_circle_proIndicator.dart';
+import 'package:e_commerce_app_superbase/common/custom_derlight_bar.dart';
 import 'package:e_commerce_app_superbase/core/app_colors.dart';
+import 'package:e_commerce_app_superbase/views/auth/login/logic/cubit/authentication_cubit.dart';
 import 'package:e_commerce_app_superbase/views/auth/login/ui/forgot_view.dart';
 import 'package:e_commerce_app_superbase/common/custom_button.dart';
 import 'package:e_commerce_app_superbase/common/custom_textfield.dart';
 import 'package:e_commerce_app_superbase/core/loading_screen.dart';
 import 'package:e_commerce_app_superbase/views/auth/login/ui/register_view.dart';
-import 'package:e_commerce_app_superbase/views/auth/nav_bar/ui/main_home_view.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-class LoginView extends StatelessWidget {
+class LoginView extends StatefulWidget {
   const LoginView({super.key});
+
+  @override
+  State<LoginView> createState() => _LoginViewState();
+}
+
+class _LoginViewState extends State<LoginView> {
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    final _formKey = GlobalKey<FormState>();
-    return Form(
-      key: _formKey,
-      child: Scaffold(
-        resizeToAvoidBottomInset: false,
-        body: Padding(
-          padding: const EdgeInsets.all(10.0),
-          child: Column(
-            // mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SizedBox(height: size.height * 0.20),
-              Text(
-                "Sign in",
-                style: TextStyle(
-                  fontSize: 32,
-                  color: Colors.black,
-                  fontFamily: "CircularStd",
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              SizedBox(height: 15),
-              CustomTextField(
-                hintText: 'Email Address',
-                keyboardType: TextInputType.emailAddress,
-              ),
-              SizedBox(height: 15),
-              CustomTextField(
-                hintText: 'Password',
-                keyboardType: TextInputType.visiblePassword,
-                isPassword: true,
-              ),
-              SizedBox(height: 15),
-              GestureDetector(
-                onTap: () {
-                  loadingScreen(context, () => const ForgotView());
-                },
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Text(
-                      "Forgot Password?",
-                      style: TextStyle(
-                        color: Colors.blue,
-                        fontWeight: FontWeight.bold,
-                        fontFamily: "CircularStd",
+
+    return BlocConsumer<AuthenticationCubit, AuthenticationState>(
+      listener: (context, state) {
+        if (state is LoginFailure) {
+          showCustomDelightToastBar(
+            context,
+            state.message,
+            const Icon(Icons.error),
+          );
+        }
+      },
+      builder: (context, state) {
+        final cubit = context.read<AuthenticationCubit>();
+
+        return Scaffold(
+          resizeToAvoidBottomInset: true,
+          body: state is LoginLoading
+              ? const CustomCircleProgIndicator()
+              : SafeArea(
+                  child: SingleChildScrollView(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 20,
+                      vertical: 24,
+                    ),
+                    child: Form(
+                      key: _formKey,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SizedBox(height: size.height * 0.1),
+                          Text(
+                            "Sign in",
+                            style: const TextStyle(
+                              fontSize: 32,
+                              fontFamily: "CircularStd",
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black,
+                            ),
+                          ),
+                          const SizedBox(height: 20),
+
+                          /// Email
+                          CustomTextField(
+                            hintText: 'Email Address',
+                            keyboardType: TextInputType.emailAddress,
+                            controller: emailController,
+                          ),
+                          const SizedBox(height: 15),
+
+                          /// Password
+                          CustomTextField(
+                            hintText: 'Password',
+                            keyboardType: TextInputType.visiblePassword,
+                            isPassword: true,
+                            controller: passwordController,
+                          ),
+                          const SizedBox(height: 10),
+
+                          /// Forgot Password
+                          Align(
+                            alignment: Alignment.centerRight,
+                            child: GestureDetector(
+                              onTap: () => loadingScreen(
+                                context,
+                                () => const ForgotView(),
+                              ),
+                              child: const Text(
+                                "Forgot Password?",
+                                style: TextStyle(
+                                  color: Colors.blue,
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: "CircularStd",
+                                ),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 20),
+
+                          /// Continue button
+                          CustomButton(
+                            text: "Continue",
+                            onPressed: () {
+                              if (_formKey.currentState!.validate()) {
+                                cubit.login(
+                                  email: emailController.text,
+                                  password: passwordController.text,
+                                );
+                              }
+                            },
+                            backgroundColor: AppColors.primaryColor,
+                            foregroundColor: Colors.white,
+                          ),
+                          const SizedBox(height: 20),
+
+                          /// Register link
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              const Text("Don't have an Account? "),
+                              GestureDetector(
+                                onTap: () => loadingScreen(
+                                  context,
+                                  () => const RegisterView(),
+                                ),
+                                child: const Text(
+                                  "Create One",
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(height: size.height * 0.05),
+
+                          /// Social login
+                          CustomButton(
+                            text: "Continue with Apple",
+                            onPressed: () {},
+                            backgroundColor: AppColors.thirdColor,
+                            foregroundColor: Colors.black,
+                            image: Image.asset(
+                              "assets/login_images/Apple.png",
+                              height: 24,
+                              width: 24,
+                            ),
+                          ),
+                          const SizedBox(height: 15),
+                          CustomButton(
+                            text: "Continue with Google",
+                            onPressed: () {},
+                            backgroundColor: AppColors.thirdColor,
+                            foregroundColor: Colors.black,
+                            image: Image.asset(
+                              "assets/login_images/Google.png",
+                              height: 24,
+                              width: 24,
+                            ),
+                          ),
+                          const SizedBox(height: 15),
+                          CustomButton(
+                            text: "Continue with Facebook",
+                            onPressed: () {},
+                            backgroundColor: AppColors.thirdColor,
+                            foregroundColor: Colors.black,
+                            image: Image.asset(
+                              "assets/login_images/Facebook.png",
+                              height: 24,
+                              width: 24,
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-                  ],
-                ),
-              ),
-              SizedBox(height: 15),
-              CustomButton(
-                text: "Continue",
-                onPressed: () {
-                  // loadingScreen(context, () => const MainHomeView());
-                  if (_formKey.currentState!.validate()) {
-                    loadingScreen(context, () => const MainHomeView());
-                  }
-                },
-                backgroundColor: AppColors.primaryColor,
-                foregroundColor: Colors.white,
-              ),
-              SizedBox(height: 15),
-              Row(
-                children: [
-                  Text("Don't have an Account? "),
-                  GestureDetector(
-                    onTap: () {
-                      // Text("Create One");
-                      loadingScreen(context, () => const RegisterView());
-                    },
-                    child: Text(
-                      "Create One",
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
                   ),
-                ],
-              ),
-              SizedBox(height: size.height * 0.05),
-              CustomButton(
-                text: "Continue with Apple",
-                onPressed: () {},
-                backgroundColor: AppColors.thirdColor,
-                foregroundColor: Colors.black,
-                image: Image.asset(
-                  "assets/login_images/Apple.png",
-                  height: 24,
-                  width: 24,
                 ),
-              ),
-              SizedBox(height: 15),
-              CustomButton(
-                text: "Continue with Google",
-                onPressed: () {},
-                backgroundColor: AppColors.thirdColor,
-                foregroundColor: Colors.black,
-                image: Image.asset(
-                  "assets/login_images/Google.png",
-                  height: 24,
-                  width: 24,
-                ),
-              ),
-              SizedBox(height: 15),
-              CustomButton(
-                text: "Continue with Facebook",
-                onPressed: () {},
-                backgroundColor: AppColors.thirdColor,
-                foregroundColor: Colors.black,
-                image: Image.asset(
-                  "assets/login_images/Facebook.png",
-                  height: 24,
-                  width: 24,
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
+        );
+      },
     );
+  }
+
+  @override
+  void dispose() {
+    emailController.dispose();
+    passwordController.dispose();
+    super.dispose();
   }
 }

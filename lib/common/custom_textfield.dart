@@ -6,6 +6,7 @@ class CustomTextField extends StatefulWidget {
   final TextInputType keyboardType;
   final bool isPassword;
   final Icon prefixIcon;
+  final TextEditingController? controller;
 
   const CustomTextField({
     super.key,
@@ -13,6 +14,7 @@ class CustomTextField extends StatefulWidget {
     required this.keyboardType,
     this.isPassword = false,
     this.prefixIcon = const Icon(Icons.person),
+    this.controller,
   });
 
   @override
@@ -31,6 +33,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      controller: widget.controller, // gắn controller vào đây
       validator: (value) {
         if (value == null || value.isEmpty) {
           return 'Please do not leave blank';
