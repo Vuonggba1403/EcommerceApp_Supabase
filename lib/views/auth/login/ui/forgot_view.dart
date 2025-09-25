@@ -1,8 +1,8 @@
-import 'package:e_commerce_app_superbase/core/app_colors.dart';
-import 'package:e_commerce_app_superbase/common/custom_button.dart';
-import 'package:e_commerce_app_superbase/common/custom_textfield.dart';
-import 'package:e_commerce_app_superbase/core/loading_screen.dart';
-import 'package:e_commerce_app_superbase/views/auth/login/ui/login_view.dart';
+import 'package:e_commerce_app_supabase/core/app_colors.dart';
+import 'package:e_commerce_app_supabase/common/custom_button.dart';
+import 'package:e_commerce_app_supabase/common/custom_textfield.dart';
+import 'package:e_commerce_app_supabase/core/loading_screen.dart';
+import 'package:e_commerce_app_supabase/views/auth/login/ui/login_view.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 

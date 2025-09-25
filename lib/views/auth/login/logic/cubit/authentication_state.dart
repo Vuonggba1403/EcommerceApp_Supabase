@@ -20,5 +20,5 @@ final class SignUpLoading extends AuthenticationState {}
 
 final class SignUpFailure extends AuthenticationState {
   final String message;
-  SignUpFailure({required this.message});
+  SignUpFailure(this.message);
 }

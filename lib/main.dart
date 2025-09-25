@@ -1,9 +1,9 @@
-import 'package:e_commerce_app_superbase/views/auth/login/logic/cubit/authentication_cubit.dart';
-import 'package:e_commerce_app_superbase/views/auth/login/ui/login_view.dart';
-import 'package:e_commerce_app_superbase/views/auth/login/ui/register_view.dart';
-import 'package:e_commerce_app_superbase/views/auth/nav_bar/ui/main_home_view.dart';
-import 'package:e_commerce_app_superbase/views/home/ui/home_view.dart';
-import 'package:e_commerce_app_superbase/views/splash/ui/splash_view.dart';
+import 'package:e_commerce_app_supabase/views/auth/login/logic/cubit/authentication_cubit.dart';
+import 'package:e_commerce_app_supabase/views/auth/login/ui/login_view.dart';
+import 'package:e_commerce_app_supabase/views/auth/login/ui/register_view.dart';
+import 'package:e_commerce_app_supabase/views/auth/nav_bar/ui/main_home_view.dart';
+import 'package:e_commerce_app_supabase/views/home/ui/home_view.dart';
+import 'package:e_commerce_app_supabase/views/splash/ui/splash_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';

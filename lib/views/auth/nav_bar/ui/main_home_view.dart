@@ -1,11 +1,11 @@
 import 'dart:math';
 
-import 'package:e_commerce_app_superbase/core/app_colors.dart';
-import 'package:e_commerce_app_superbase/views/auth/nav_bar/logic/cubit/nav_bar_cubit.dart';
-import 'package:e_commerce_app_superbase/views/favorite/ui/favorite_view.dart';
-import 'package:e_commerce_app_superbase/views/home/ui/home_view.dart';
-import 'package:e_commerce_app_superbase/views/profiles/ui/profile_view.dart';
-import 'package:e_commerce_app_superbase/views/cart/ui/cart_view.dart';
+import 'package:e_commerce_app_supabase/core/app_colors.dart';
+import 'package:e_commerce_app_supabase/views/auth/nav_bar/logic/cubit/nav_bar_cubit.dart';
+import 'package:e_commerce_app_supabase/views/favorite/ui/favorite_view.dart';
+import 'package:e_commerce_app_supabase/views/home/ui/home_view.dart';
+import 'package:e_commerce_app_supabase/views/profiles/ui/profile_view.dart';
+import 'package:e_commerce_app_supabase/views/cart/ui/cart_view.dart';
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

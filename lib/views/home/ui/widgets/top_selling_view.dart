@@ -1,4 +1,4 @@
-import 'package:e_commerce_app_superbase/core/app_colors.dart';
+import 'package:e_commerce_app_supabase/core/app_colors.dart';
 import 'package:flutter/material.dart';
 
 class TopSellingView extends StatelessWidget {

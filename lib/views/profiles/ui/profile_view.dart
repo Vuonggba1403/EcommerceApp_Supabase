@@ -1,4 +1,4 @@
-import 'package:e_commerce_app_superbase/views/profiles/ui/widgets/custom_card_profiles.dart';
+import 'package:e_commerce_app_supabase/views/profiles/ui/widgets/custom_card_profiles.dart';
 import 'package:flutter/material.dart';
 
 class ProfileView extends StatelessWidget {

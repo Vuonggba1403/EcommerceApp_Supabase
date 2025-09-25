@@ -1,4 +1,4 @@
-import 'package:e_commerce_app_superbase/common/custom_textfield.dart';
+import 'package:e_commerce_app_supabase/common/custom_textfield.dart';
 import 'package:flutter/material.dart';
 
 class SearchField extends StatelessWidget {
