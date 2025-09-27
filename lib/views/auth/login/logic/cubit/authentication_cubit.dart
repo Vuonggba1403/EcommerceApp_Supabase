@@ -12,6 +12,7 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
 
   // Lấy Supabase client toàn cục đã được khởi tạo trong Supabase.initialize()
   SupabaseClient client = Supabase.instance.client;
+
   //Login
   Future<void> login({required String email, required String password}) async {
     emit(LoginLoading());
@@ -75,5 +76,17 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
     );
     emit(GoogleSignInSuccess());
     return response;
+  }
+
+  //logout
+
+  Future<void> signOut() async {
+    emit(LogoutLoading());
+    try {
+      await client.auth.signOut();
+      emit(LogoutSuccess());
+    } catch (e) {
+      emit(LogoutFailure(e.toString()));
+    }
   }
 }

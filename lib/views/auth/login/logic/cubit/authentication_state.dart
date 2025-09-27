@@ -31,3 +31,12 @@ final class GoogleSignInFailure extends AuthenticationState {
   final String message;
   GoogleSignInFailure(this.message);
 }
+
+final class LogoutLoading extends AuthenticationState {}
+
+final class LogoutSuccess extends AuthenticationState {}
+
+final class LogoutFailure extends AuthenticationState {
+  final String message;
+  LogoutFailure(this.message);
+}
