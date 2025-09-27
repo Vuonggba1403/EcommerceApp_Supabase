@@ -30,7 +30,7 @@ class _RegisterViewState extends State<RegisterView> {
         if (state is SignUpSuccess) {
           showCustomDelightToastBar(
             context,
-            "Sign up successful, Moving to Login Page",
+            "Sign up successful",
             Icon(Icons.check, color: Colors.green),
           );
           loadingScreen(context, () => const LoginView());

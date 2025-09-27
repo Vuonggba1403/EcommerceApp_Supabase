@@ -1,8 +1,10 @@
 import 'package:e_commerce_app_supabase/core/app_colors.dart';
 import 'package:e_commerce_app_supabase/views/auth/login/ui/login_view.dart'
     show LoginView;
+import 'package:e_commerce_app_supabase/views/auth/nav_bar/ui/main_home_view.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class SplashView extends StatefulWidget {
   const SplashView({super.key});
@@ -12,26 +14,29 @@ class SplashView extends StatefulWidget {
 }
 
 class _SplashViewState extends State<SplashView> {
+  SupabaseClient client = Supabase.instance.client;
   @override
   void initState() {
     super.initState();
-    _navigateToLogin(); // gọi hàm chuyển sang Login sau delay
+    _navigateToLogin();
   }
 
   Future<void> _navigateToLogin() async {
-    await Future.delayed(
-      const Duration(seconds: 3),
-    ); // delay 3s trước khi chuyển
+    await Future.delayed(const Duration(seconds: 3));
     if (!mounted) return;
     Navigator.pushReplacement(
       context,
-      MaterialPageRoute(builder: (context) => const LoginView()),
+      MaterialPageRoute(
+        builder: (context) => client.auth.currentUser != null
+            ? const MainHomeView()
+            : const LoginView(),
+      ),
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size; // lấy kích thước màn hình
+    final size = MediaQuery.of(context).size;
 
     return Scaffold(
       body: Container(

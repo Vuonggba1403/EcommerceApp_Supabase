@@ -1,5 +1,8 @@
+import 'package:e_commerce_app_supabase/core/loading_screen.dart';
+import 'package:e_commerce_app_supabase/views/auth/login/ui/login_view.dart';
 import 'package:e_commerce_app_supabase/views/profiles/ui/widgets/custom_card_profiles.dart';
 import 'package:flutter/material.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class ProfileView extends StatelessWidget {
   const ProfileView({super.key});
@@ -67,7 +70,13 @@ class ProfileView extends StatelessWidget {
                 CustomCardProfiles(text: "Support"),
                 SizedBox(height: size.height * 0.01),
                 ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () async {
+                    await Supabase.instance.client.auth.signOut();
+
+                    if (context.mounted) {
+                      loadingScreen(context, () => const LoginView());
+                    }
+                  },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.red,
                     foregroundColor: Colors.white,

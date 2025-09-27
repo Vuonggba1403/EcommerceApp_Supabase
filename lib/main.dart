@@ -1,3 +1,4 @@
+import 'package:e_commerce_app_supabase/core/my_observer.dart';
 import 'package:e_commerce_app_supabase/views/auth/login/logic/cubit/authentication_cubit.dart';
 import 'package:e_commerce_app_supabase/views/auth/login/ui/login_view.dart';
 import 'package:e_commerce_app_supabase/views/auth/login/ui/register_view.dart';
@@ -15,6 +16,7 @@ void main() async {
     anonKey:
         'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFieGRxeGF6Y3JyY3VvZm51a3RkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg2Nzg0NTMsImV4cCI6MjA3NDI1NDQ1M30.437lXY_wgXCdl0b_PfbCBgQmZdtA3dBCI2-RW4lSMP4',
   );
+  Bloc.observer = MyObserver();
   runApp(OurMarket());
 }
 
@@ -33,7 +35,7 @@ class OurMarket extends StatelessWidget {
           fontFamily: "CircularStd",
           textTheme: const TextTheme(bodyMedium: TextStyle(fontSize: 15)),
         ),
-        home: LoginView(),
+        home: SplashView(),
       ),
     );
   }
