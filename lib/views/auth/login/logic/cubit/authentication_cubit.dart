@@ -38,7 +38,7 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
     emit(SignUpLoading());
     try {
       await client.auth.signUp(password: password, email: email);
-      emit(SignUpSuccess());
+      await getUserData(firstName: firstName, email: email, lastName: lastName);
     } on AuthException catch (e) {
       log(e.toString());
       emit(SignUpFailure(e.message));
@@ -49,7 +49,6 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
   }
 
   //login google
-
   GoogleSignInAccount? googleUser;
   Future<AuthResponse> googleSignIn() async {
     emit(GoogleSignInLoading());
@@ -79,7 +78,6 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
   }
 
   //logout
-
   Future<void> signOut() async {
     emit(LogoutLoading());
     try {
@@ -99,6 +97,27 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
     } catch (e) {
       //  log(e.toString());
       emit(PasswordResetFailure(e.toString()));
+    }
+  }
+
+  //get user data
+  Future<void> getUserData({
+    required String firstName,
+    required String email,
+    required String lastName,
+  }) async {
+    emit(UserDataLoading());
+    try {
+      await client.from('users').insert({
+        "id": client.auth.currentUser!.id,
+        "firstName": firstName,
+        "email": email,
+        "lastName": lastName,
+      });
+      emit(UserDataSuccess());
+    } catch (e) {
+      // print(e);
+      emit(UserDataFailure());
     }
   }
 }

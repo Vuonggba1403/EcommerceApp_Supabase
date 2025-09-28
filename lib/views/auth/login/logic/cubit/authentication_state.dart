@@ -49,3 +49,9 @@ final class PasswordResetFailure extends AuthenticationState {
   final String message;
   PasswordResetFailure(this.message);
 }
+
+final class UserDataLoading extends AuthenticationState {}
+
+final class UserDataSuccess extends AuthenticationState {}
+
+final class UserDataFailure extends AuthenticationState {}
