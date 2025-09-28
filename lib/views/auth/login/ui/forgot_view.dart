@@ -98,6 +98,13 @@ class _ForgotViewState extends State<ForgotView> {
                           CustomButton(
                             text: "Continue",
                             onPressed: () {
+                              // final email = context
+                              //     .read<AuthenticationCubit>()
+                              //     .emailController
+                              //     .text;
+                              // context.read<AuthenticationCubit>().resetPassword(
+                              //   email: _emailController.text,
+                              // );
                               if (_formKey.currentState!.validate()) {
                                 context
                                     .read<AuthenticationCubit>()
