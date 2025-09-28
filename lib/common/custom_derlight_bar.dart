@@ -20,15 +20,21 @@ void showCustomDelightToastBar(
     builder: (context) {
       return ToastCard(
         color: AppColors.primaryColor,
-        leading: icon,
-        title: Text(
-          message,
-          style: const TextStyle(
-            fontFamily: "OpenSans",
-            fontWeight: FontWeight.bold,
-            color: AppColors.secondColor,
-            fontSize: 16,
-          ),
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            icon,
+            SizedBox(width: 5),
+            Text(
+              message,
+              style: const TextStyle(
+                fontFamily: "OpenSans",
+                fontWeight: FontWeight.bold,
+                color: AppColors.secondColor,
+                fontSize: 16,
+              ),
+            ),
+          ],
         ),
       );
     },

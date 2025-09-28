@@ -5,6 +5,7 @@ import 'package:e_commerce_app_supabase/common/custom_button.dart';
 import 'package:e_commerce_app_supabase/common/custom_textfield.dart';
 import 'package:e_commerce_app_supabase/core/loading_screen.dart';
 import 'package:e_commerce_app_supabase/views/auth/login/logic/cubit/authentication_cubit.dart';
+import 'package:e_commerce_app_supabase/views/auth/login/ui/forgot_view.dart';
 import 'package:e_commerce_app_supabase/views/auth/login/ui/login_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -135,7 +136,12 @@ class _RegisterViewState extends State<RegisterView> {
                               Text("Forgot Password?"),
                               SizedBox(width: 5),
                               GestureDetector(
-                                onTap: () {},
+                                onTap: () {
+                                  loadingScreen(
+                                    context,
+                                    () => const ForgotView(),
+                                  );
+                                },
                                 child: Text(
                                   "Reset",
                                   style: TextStyle(
