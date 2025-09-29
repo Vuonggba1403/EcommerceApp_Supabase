@@ -1,6 +1,7 @@
 import 'package:e_commerce_app_supabase/common/custom_circle_proIndicator.dart';
 import 'package:e_commerce_app_supabase/common/custom_derlight_bar.dart';
 import 'package:e_commerce_app_supabase/core/loading_screen.dart';
+import 'package:e_commerce_app_supabase/core/models/user_models.dart';
 import 'package:e_commerce_app_supabase/views/auth/login/logic/cubit/authentication_cubit.dart';
 import 'package:e_commerce_app_supabase/views/auth/login/ui/login_view.dart';
 import 'package:e_commerce_app_supabase/views/profiles/ui/widgets/custom_card_profiles.dart';
@@ -33,6 +34,7 @@ class ProfileView extends StatelessWidget {
         }
       },
       builder: (context, state) {
+        UserDataModel? user = context.read<AuthenticationCubit>().userDataModel;
         return state is LogoutLoading
             ? CustomCircleProgIndicator()
             : SafeArea(
@@ -69,17 +71,16 @@ class ProfileView extends StatelessWidget {
                                     child: Column(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
-                                      children: const [
+                                      children: [
                                         Text(
-                                          "Username",
+                                          '${user?.firstName} ${user?.lastName}' ??
+                                              "Username",
                                           style: TextStyle(
                                             fontWeight: FontWeight.bold,
                                           ),
                                         ),
                                         SizedBox(height: 4),
-                                        Text("John Doe"),
-                                        SizedBox(height: 4),
-                                        Text("123435345"),
+                                        Text('${user?.email}' ?? "Email"),
                                       ],
                                     ),
                                   ),

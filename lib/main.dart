@@ -26,7 +26,7 @@ class OurMarket extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => AuthenticationCubit(),
+      create: (context) => AuthenticationCubit()..getUserData(),
       child: MaterialApp(
         title: "Our Market",
         debugShowCheckedModeBanner: false,
