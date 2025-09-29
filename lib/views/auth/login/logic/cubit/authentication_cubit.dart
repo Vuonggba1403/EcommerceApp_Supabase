@@ -73,6 +73,11 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
       idToken: idToken,
       accessToken: accessToken,
     );
+    await getUserData(
+      firstName: googleUser!.displayName ?? '',
+      email: googleUser!.email,
+      lastName: '',
+    );
     emit(GoogleSignInSuccess());
     return response;
   }
@@ -108,7 +113,9 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
   }) async {
     emit(UserDataLoading());
     try {
-      await client.from('users').insert({
+      //insert => only add
+      //update => update or add
+      await client.from('users').upsert({
         "id": client.auth.currentUser!.id,
         "firstName": firstName,
         "email": email,
