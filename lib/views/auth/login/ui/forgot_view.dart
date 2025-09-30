@@ -1,3 +1,4 @@
+import 'package:e_commerce_app_supabase/common/custom_backbutton.dart';
 import 'package:e_commerce_app_supabase/common/custom_circle_proIndicator.dart';
 import 'package:e_commerce_app_supabase/common/custom_derlight_bar.dart';
 import 'package:e_commerce_app_supabase/core/app_colors.dart';
@@ -56,22 +57,7 @@ class _ForgotViewState extends State<ForgotView> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           SizedBox(height: size.height * 0.15),
-                          ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.white,
-                              foregroundColor: Colors.black,
-                              minimumSize: const Size(50, 50),
-                              shape: const CircleBorder(),
-                            ),
-                            onPressed: () {
-                              // Navigator.pop(context);
-                              loadingScreen(context, () => const LoginView());
-                            },
-                            child: Icon(
-                              Icons.arrow_back_ios,
-                              color: Colors.black,
-                            ),
-                          ),
+                          CustomBackbutton(),
                           SizedBox(height: 15),
                           Lottie.asset(
                             "assets/login_images/forgotpassword.json",
