@@ -1,3 +1,5 @@
+import 'package:e_commerce_app_supabase/core/loading_screen.dart';
+import 'package:e_commerce_app_supabase/views/home/ui/widgets/all_categories.dart';
 import 'package:flutter/material.dart';
 
 class CategorySession extends StatelessWidget {
@@ -21,7 +23,15 @@ class CategorySession extends StatelessWidget {
               "Categories",
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
             ),
-            Text("See All"),
+            GestureDetector(
+              onTap: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => AllCategories(categories: categories),
+                ),
+              ),
+              child: const Text("See All"),
+            ),
           ],
         ),
         SingleChildScrollView(
