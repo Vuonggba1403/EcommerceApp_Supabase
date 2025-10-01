@@ -1,6 +1,7 @@
 import 'package:e_commerce_app_supabase/common/custom_backbutton.dart'
     show CustomBackbutton;
 import 'package:e_commerce_app_supabase/common/custom_card.dart';
+import 'package:e_commerce_app_supabase/views/home/ui/widgets/categories/categori_details_screen.dart';
 import 'package:flutter/material.dart';
 
 class AllCategories extends StatelessWidget {
@@ -14,7 +15,7 @@ class AllCategories extends StatelessWidget {
     return Scaffold(
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.all(10.0),
+          padding: const EdgeInsets.all(15.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -27,9 +28,19 @@ class AllCategories extends StatelessWidget {
               Expanded(
                 child: ListView.builder(
                   itemBuilder: (context, index) {
-                    return CustomCard(
-                      img: Image.asset(categories[index]["image"]!),
-                      text: categories[index]["title"]!,
+                    final cat = categories[index];
+                    return GestureDetector(
+                      onTap: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              CategoriesDetailView(category: cat),
+                        ),
+                      ),
+                      child: CustomCard(
+                        img: Image.asset(cat["image"]!),
+                        text: cat["title"]!,
+                      ),
                     );
                   },
                   itemCount: categories.length,

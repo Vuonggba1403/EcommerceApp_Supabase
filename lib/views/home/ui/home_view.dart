@@ -2,7 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:e_commerce_app_supabase/core/app_colors.dart';
 import 'package:e_commerce_app_supabase/views/home/ui/widgets/cache_images_view.dart'
     show CacheImagesView, CacheImage;
-import 'package:e_commerce_app_supabase/views/home/ui/widgets/categori_session.dart';
+import 'package:e_commerce_app_supabase/views/home/ui/widgets/categories/categori_session.dart';
 import 'package:e_commerce_app_supabase/views/home/ui/widgets/search_textfield.dart';
 import 'package:e_commerce_app_supabase/views/home/ui/widgets/sell_card.dart';
 import 'package:e_commerce_app_supabase/views/home/ui/widgets/top_selling_view.dart';
