@@ -60,7 +60,8 @@ class _ProductDescriptionScreenState extends State<ProductDescriptionScreen> {
         children: [
           Center(
             child: Image.network(
-              widget.productData['image'] ?? 'https://via.placeholder.com/300',
+              widget.productData['image'] ??
+                  'https://images.unsplash.com/photo-1622567893612-a5345baa5c9a?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
               fit: BoxFit.cover,
               errorBuilder: (context, error, stackTrace) {
                 return Container(

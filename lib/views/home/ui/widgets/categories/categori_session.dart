@@ -1,5 +1,9 @@
 import 'package:e_commerce_app_supabase/core/loading_screen.dart';
+<<<<<<< HEAD:lib/views/home/ui/widgets/categories/categori_session.dart
 import 'package:e_commerce_app_supabase/views/home/ui/widgets/categories/all_categories.dart';
+=======
+import 'package:e_commerce_app_supabase/views/home/ui/widgets/all_categories.dart';
+>>>>>>> aa97fe16cf1f23f7ffd5c52b8e594f0663c16fa3:lib/views/home/ui/widgets/categori_session.dart
 import 'package:flutter/material.dart';
 
 class CategorySession extends StatelessWidget {
