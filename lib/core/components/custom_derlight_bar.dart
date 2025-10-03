@@ -1,7 +1,7 @@
 import 'package:delightful_toast/delight_toast.dart';
 import 'package:delightful_toast/toast/components/toast_card.dart';
 import 'package:delightful_toast/toast/utils/enums.dart';
-import 'package:e_commerce_app_supabase/core/app_colors.dart';
+import 'package:e_commerce_app_supabase/core/functions/app_colors.dart';
 import 'package:flutter/material.dart';
 
 // Flag toàn cục để tránh toast chồng

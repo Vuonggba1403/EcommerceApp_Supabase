@@ -1,5 +1,5 @@
-import 'package:e_commerce_app_supabase/common/custom_backbutton.dart';
-import 'package:e_commerce_app_supabase/common/custom_card.dart';
+import 'package:e_commerce_app_supabase/core/components/custom_backbutton.dart';
+import 'package:e_commerce_app_supabase/core/components/custom_card.dart';
 import 'package:e_commerce_app_supabase/views/home/ui/widgets/categories/description_products.dart';
 import 'package:flutter/material.dart';
 
@@ -56,7 +56,8 @@ class CategoriesDetailView extends StatelessWidget {
               productData: {
                 'name': "Men's Herrington Jacket",
                 'price': '148',
-                'image': 'https://via.placeholder.com/300',
+                'image':
+                    'https://images.unsplash.com/photo-1622567893612-a5345baa5c9a?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
                 'description':
                     'Built for life and styled for the city, this technical fleece hoodie will keep you comfortable during your busy day.',
                 'reviewCount': '279',

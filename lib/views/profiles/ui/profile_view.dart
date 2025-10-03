@@ -1,10 +1,10 @@
-import 'package:e_commerce_app_supabase/common/custom_circle_proIndicator.dart';
-import 'package:e_commerce_app_supabase/common/custom_derlight_bar.dart';
-import 'package:e_commerce_app_supabase/core/loading_screen.dart';
+import 'package:e_commerce_app_supabase/core/components/custom_circle_proIndicator.dart';
+import 'package:e_commerce_app_supabase/core/components/custom_derlight_bar.dart';
+import 'package:e_commerce_app_supabase/core/functions/loading_screen.dart';
 import 'package:e_commerce_app_supabase/core/models/user_models.dart';
 import 'package:e_commerce_app_supabase/views/auth/login/logic/cubit/authentication_cubit.dart';
 import 'package:e_commerce_app_supabase/views/auth/login/ui/login_view.dart';
-import 'package:e_commerce_app_supabase/common/custom_card.dart';
+import 'package:e_commerce_app_supabase/core/components/custom_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';

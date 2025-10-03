@@ -1,6 +1,6 @@
-import 'package:e_commerce_app_supabase/common/custom_backbutton.dart'
+import 'package:e_commerce_app_supabase/core/components/custom_backbutton.dart'
     show CustomBackbutton;
-import 'package:e_commerce_app_supabase/common/custom_card.dart';
+import 'package:e_commerce_app_supabase/core/components/custom_card.dart';
 import 'package:e_commerce_app_supabase/views/home/ui/widgets/categories/categori_details_screen.dart';
 import 'package:flutter/material.dart';
 

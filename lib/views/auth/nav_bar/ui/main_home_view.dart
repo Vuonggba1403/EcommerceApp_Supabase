@@ -1,6 +1,4 @@
-import 'dart:math';
-
-import 'package:e_commerce_app_supabase/core/app_colors.dart';
+import 'package:e_commerce_app_supabase/core/functions/app_colors.dart';
 import 'package:e_commerce_app_supabase/views/auth/nav_bar/logic/cubit/nav_bar_cubit.dart';
 import 'package:e_commerce_app_supabase/views/favorite/ui/favorite_view.dart';
 import 'package:e_commerce_app_supabase/views/home/ui/home_view.dart';

@@ -1,4 +1,4 @@
-import 'package:e_commerce_app_supabase/common/custom_backbutton.dart';
+import 'package:e_commerce_app_supabase/core/components/custom_backbutton.dart';
 import 'package:flutter/material.dart';
 
 class ProductDescriptionScreen extends StatefulWidget {
