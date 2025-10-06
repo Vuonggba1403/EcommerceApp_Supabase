@@ -3,7 +3,7 @@ import 'package:e_commerce_app_supabase/core/functions/app_colors.dart';
 import 'package:flutter/material.dart';
 
 class CacheImage extends StatelessWidget {
-  const CacheImage({super.key, required this.url});
+  const CacheImage({super.key, required this.url, required int height});
 
   final String url;
   @override
