@@ -1,5 +1,5 @@
 import 'package:e_commerce_app_supabase/core/functions/app_colors.dart';
-import 'package:e_commerce_app_supabase/views/home/ui/widgets/cache_images_view.dart';
+import 'package:e_commerce_app_supabase/core/components/cache_images_view.dart';
 import 'package:flutter/material.dart';
 
 class SellProductCard extends StatelessWidget {

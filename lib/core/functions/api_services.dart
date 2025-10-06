@@ -2,7 +2,6 @@ import 'package:dio/dio.dart';
 import 'package:e_commerce_app_supabase/core/sensitive_data.dart';
 
 class ApiServices {
-  // Dio instance dùng chung: baseUrl là base của Supabase REST, headers mặc định lấy từ anonKey
   final Dio _dio = Dio(
     BaseOptions(
       baseUrl: "https://abxdqxazcrrcuofnuktd.supabase.co/rest/v1/",
