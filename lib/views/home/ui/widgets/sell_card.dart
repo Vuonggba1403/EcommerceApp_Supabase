@@ -19,7 +19,6 @@ class SellProductCard extends StatelessWidget {
                 child: CacheImage(
                   url:
                       "https://images.unsplash.com/photo-1560769629-975ec94e6a86?w=500&h=500",
-                  height: 180,
                 ),
               ),
 

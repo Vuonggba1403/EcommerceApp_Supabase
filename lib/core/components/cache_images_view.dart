@@ -3,13 +3,16 @@ import 'package:e_commerce_app_supabase/core/functions/app_colors.dart';
 import 'package:flutter/material.dart';
 
 class CacheImage extends StatelessWidget {
-  const CacheImage({super.key, required this.url, required int height});
+  const CacheImage({super.key, required this.url});
 
   final String url;
   @override
   Widget build(BuildContext context) {
     return CachedNetworkImage(
       imageUrl: url,
+      height: 300,
+      fit: BoxFit.fill,
+      width: double.infinity,
       placeholder: (context, url) => const Center(
         child: CircularProgressIndicator(color: AppColors.primaryColor),
       ),
