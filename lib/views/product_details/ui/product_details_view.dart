@@ -1,7 +1,11 @@
 import 'package:e_commerce_app_supabase/core/components/cache_images_view.dart';
+import 'package:e_commerce_app_supabase/core/components/custom_textfield.dart';
 import 'package:e_commerce_app_supabase/core/functions/app_colors.dart';
 import 'package:e_commerce_app_supabase/core/models/product_model/product_model.dart';
+import 'package:e_commerce_app_supabase/views/product_details/logic/cubit/product_details_cubit.dart';
+import 'package:e_commerce_app_supabase/views/product_details/ui/widgets/comment_list.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ProductDetailsView extends StatefulWidget {
   const ProductDetailsView({super.key, required this.product});
@@ -29,32 +33,36 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
 
-    return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        title: Text(widget.product.productName ?? "Product Details"),
-        backgroundColor: AppColors.primaryColor,
-        elevation: 0,
-        foregroundColor: AppColors.secondColor,
-      ),
-      body: SafeArea(
-        child: Column(
-          children: [
-            Expanded(
-              child: SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // Product image
-                    CacheImage(url: widget.product.imageUrl ?? ''),
-                    const SizedBox(height: 16),
-                    _buildProductDetailsView(size),
-                  ],
+    return BlocProvider(
+      create: (context) =>
+          ProductDetailsCubit()..getRates(productId: widget.product.productId!),
+      child: Scaffold(
+        backgroundColor: Colors.white,
+        appBar: AppBar(
+          title: Text(widget.product.productName ?? "Product Details"),
+          backgroundColor: AppColors.primaryColor,
+          elevation: 0,
+          foregroundColor: AppColors.secondColor,
+        ),
+        body: SafeArea(
+          child: Column(
+            children: [
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // Product image
+                      CacheImage(url: widget.product.imageUrl ?? ''),
+                      const SizedBox(height: 16),
+                      _buildProductDetailsView(size),
+                    ],
+                  ),
                 ),
               ),
-            ),
-            _buildBottomSection(),
-          ],
+              _buildBottomSection(),
+            ],
+          ),
         ),
       ),
     );
@@ -88,6 +96,33 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
           _buildQuantitySelector(),
           const SizedBox(height: 20),
           _buildDescription(),
+          const SizedBox(height: 20),
+          Row(
+            children: [
+              Expanded(
+                child: CustomTextField(
+                  hintText: "Write a comment...",
+                  keyboardType: TextInputType.text,
+                ),
+              ),
+              GestureDetector(
+                onTap: () {
+                  // Handle send comment action
+                  print("1");
+                },
+                child: Container(
+                  child: Icon(Icons.send, color: AppColors.primaryColor),
+                  margin: EdgeInsets.only(left: 10),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 20),
+          Text(
+            "Comments",
+            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+          ),
+          CommentsList(),
         ],
       ),
     );

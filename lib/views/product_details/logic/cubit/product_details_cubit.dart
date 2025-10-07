@@ -19,11 +19,12 @@ class ProductDetailsCubit extends Cubit<ProductDetailsState> {
     emit(GetRateLoading());
     try {
       Response response = await _apiServices.getData(
-        "rates_table?select&for_product=eq.$productId",
+        "rates_table?select*&for_product=eq.$productId",
       );
-      for (var rates in response.data) {
-        rates.add(RateModels.fromJson(rates));
+      for (var rate in response.data) {
+        rates.add(RateModels.fromJson(rate));
       }
+      log(rates.length.toString());
       emit(GetRateSuccess());
     } catch (e) {
       // print(e);
