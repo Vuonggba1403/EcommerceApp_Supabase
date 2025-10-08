@@ -6,6 +6,7 @@ import 'package:e_commerce_app_supabase/views/product_details/logic/cubit/produc
 import 'package:e_commerce_app_supabase/views/product_details/ui/widgets/comment_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 class ProductDetailsView extends StatefulWidget {
   const ProductDetailsView({super.key, required this.product});
@@ -36,34 +37,41 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
     return BlocProvider(
       create: (context) =>
           ProductDetailsCubit()..getRates(productId: widget.product.productId!),
-      child: Scaffold(
-        backgroundColor: Colors.white,
-        appBar: AppBar(
-          title: Text(widget.product.productName ?? "Product Details"),
-          backgroundColor: AppColors.primaryColor,
-          elevation: 0,
-          foregroundColor: AppColors.secondColor,
-        ),
-        body: SafeArea(
-          child: Column(
-            children: [
-              Expanded(
-                child: SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      // Product image
-                      CacheImage(url: widget.product.imageUrl ?? ''),
-                      const SizedBox(height: 16),
-                      _buildProductDetailsView(size),
-                    ],
+      child: BlocConsumer<ProductDetailsCubit, ProductDetailsState>(
+        listener: (context, state) {
+          // TODO: implement listener
+        },
+        builder: (context, state) {
+          return Scaffold(
+            backgroundColor: Colors.white,
+            appBar: AppBar(
+              title: Text(widget.product.productName ?? "Product Details"),
+              backgroundColor: AppColors.primaryColor,
+              elevation: 0,
+              foregroundColor: AppColors.secondColor,
+            ),
+            body: SafeArea(
+              child: Column(
+                children: [
+                  Expanded(
+                    child: SingleChildScrollView(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          // Product image
+                          CacheImage(url: widget.product.imageUrl ?? ''),
+                          const SizedBox(height: 16),
+                          _buildProductDetailsView(size),
+                        ],
+                      ),
+                    ),
                   ),
-                ),
+                  _buildBottomSection(),
+                ],
               ),
-              _buildBottomSection(),
-            ],
-          ),
-        ),
+            ),
+          );
+        },
       ),
     );
   }
@@ -96,6 +104,8 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
           _buildQuantitySelector(),
           const SizedBox(height: 20),
           _buildDescription(),
+          const Divider(height: 40, thickness: 2),
+          _ratingBar(),
           const SizedBox(height: 20),
           Row(
             children: [
@@ -123,6 +133,31 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
             style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
           ),
           CommentsList(),
+        ],
+      ),
+    );
+  }
+
+  Widget _ratingBar() {
+    return Center(
+      child: Column(
+        children: [
+          const Text(
+            'Rate this product',
+            style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+          ),
+          RatingBar.builder(
+            initialRating: 3,
+            minRating: 1,
+            direction: Axis.horizontal,
+            allowHalfRating: true,
+            itemCount: 5,
+            itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
+            itemBuilder: (context, _) => Icon(Icons.star, color: Colors.amber),
+            onRatingUpdate: (rating) {
+              print(rating);
+            },
+          ),
         ],
       ),
     );
@@ -268,7 +303,7 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
       children: [
         const Text(
           'Description',
-          style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
         ),
         const SizedBox(height: 8),
         Text(
