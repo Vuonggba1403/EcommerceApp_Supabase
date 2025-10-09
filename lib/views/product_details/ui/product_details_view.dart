@@ -141,7 +141,7 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
               Row(
                 children: [
                   Text("${cubit.averageRate}"),
-                  Icon(Icons.star, color: Colors.amber),
+                  Icon(Icons.star, color: Colors.amber, size: 20),
                 ],
               ),
               Icon(Icons.favorite, color: Colors.grey),
@@ -156,7 +156,7 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                 ),
                 RatingBar.builder(
-                  initialRating: 3,
+                  initialRating: cubit.userRate.toDouble(),
                   minRating: 1,
                   direction: Axis.horizontal,
                   allowHalfRating: true,
