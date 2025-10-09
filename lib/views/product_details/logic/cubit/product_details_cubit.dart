@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:e_commerce_app_supabase/core/functions/api_services.dart';
@@ -11,23 +10,37 @@ part 'product_details_state.dart';
 
 class ProductDetailsCubit extends Cubit<ProductDetailsState> {
   ProductDetailsCubit() : super(ProductDetailsInitial());
+
   final ApiServices _apiServices = ApiServices();
 
   List<RateModels> rates = [];
-  int averrageRate = 0;
+
+  int averageRate = 0;
+
   Future<void> getRates({required String productId}) async {
     emit(GetRateLoading());
+
     try {
       Response response = await _apiServices.getData(
-        "rates_table?select*&for_product=eq.$productId",
+        "rates_table?select=*&for_product=eq.$productId",
       );
+
       for (var rate in response.data) {
         rates.add(RateModels.fromJson(rate));
       }
-      log(rates.length.toString());
+
+      void _getAverageRate() {
+        for (var userRate in rates) {
+          log(userRate.rate.toString());
+          if (userRate.rate != null) {
+            averageRate += userRate.rate!;
+          }
+          averageRate = averageRate ~/ rates.length;
+        }
+      }
+
       emit(GetRateSuccess());
     } catch (e) {
-      // print(e);
       log(e.toString());
       emit(GetRateError());
     }
