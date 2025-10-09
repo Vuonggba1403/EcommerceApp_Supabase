@@ -28,21 +28,21 @@ class ProductDetailsCubit extends Cubit<ProductDetailsState> {
       for (var rate in response.data) {
         rates.add(RateModels.fromJson(rate));
       }
-
-      void _getAverageRate() {
-        for (var userRate in rates) {
-          log(userRate.rate.toString());
-          if (userRate.rate != null) {
-            averageRate += userRate.rate!;
-          }
-          averageRate = averageRate ~/ rates.length;
-        }
-      }
-
+      _getAverageRate();
       emit(GetRateSuccess());
     } catch (e) {
       log(e.toString());
       emit(GetRateError());
     }
+  }
+
+  void _getAverageRate() {
+    for (var userRate in rates) {
+      // log(userRate.rate.toString());
+      if (userRate.rate != null) {
+        averageRate += userRate.rate!;
+      }
+    }
+    averageRate = averageRate ~/ rates.length;
   }
 }
