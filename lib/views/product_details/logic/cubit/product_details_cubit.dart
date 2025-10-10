@@ -80,6 +80,7 @@ class ProductDetailsCubit extends Cubit<ProductDetailsState> {
     return false;
   }
 
+  // add or update user rate
   Future<void> addOrUpdateUserRate({
     required String productId,
     required Map<String, dynamic> data,
@@ -100,6 +101,18 @@ class ProductDetailsCubit extends Cubit<ProductDetailsState> {
     } catch (e) {
       log(e.toString());
       emit(AddOrUpdateRateFailure());
+    }
+  }
+
+  // add Comment
+  Future<void> addComment({required Map<String, dynamic> data}) async {
+    emit(AddCommentLoading());
+    try {
+      await _apiServices.postData("comments_table", data);
+      emit(AddCommentSuccess());
+    } catch (e) {
+      log(e.toString());
+      emit(AddCommentFailure());
     }
   }
 }

@@ -2,8 +2,9 @@ import 'package:e_commerce_app_supabase/core/components/cache_images_view.dart';
 import 'package:e_commerce_app_supabase/core/components/custom_circle_proIndicator.dart';
 import 'package:e_commerce_app_supabase/core/components/custom_textfield.dart';
 import 'package:e_commerce_app_supabase/core/functions/app_colors.dart';
-import 'package:e_commerce_app_supabase/core/functions/navigate_to.dart';
+import 'package:e_commerce_app_supabase/core/functions/naviga_with_back.dart';
 import 'package:e_commerce_app_supabase/core/models/product_model/product_model.dart';
+import 'package:e_commerce_app_supabase/views/auth/login/logic/cubit/authentication_cubit.dart';
 import 'package:e_commerce_app_supabase/views/product_details/logic/cubit/product_details_cubit.dart';
 import 'package:e_commerce_app_supabase/views/product_details/ui/widgets/color_selector.dart';
 import 'package:e_commerce_app_supabase/views/product_details/ui/widgets/comment_list.dart';
@@ -35,6 +36,7 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
     Colors.grey,
     Colors.brown,
   ];
+  final TextEditingController _commentController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -45,10 +47,7 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
       child: BlocConsumer<ProductDetailsCubit, ProductDetailsState>(
         listener: (context, state) {
           if (state is AddOrUpdateRateSuccess) {
-            // navigateTo(context, this.widget);
-            context.read<ProductDetailsCubit>().getRates(
-              productId: widget.product.productId!,
-            );
+            navigateWithoutBack(context, widget);
           }
         },
         builder: (context, state) {
@@ -61,7 +60,7 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
               elevation: 0,
               foregroundColor: AppColors.secondColor,
             ),
-            body: state is GetRateLoading || state is AddOrUpdateRateLoading
+            body: state is GetRateLoading || state is AddCommentLoading
                 ? CustomCircleProgIndicator()
                 : SafeArea(
                     child: Column(
@@ -188,12 +187,34 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
             children: [
               Expanded(
                 child: CustomTextField(
+                  controller: _commentController,
                   hintText: "Write a comment...",
                   keyboardType: TextInputType.text,
                 ),
               ),
               GestureDetector(
-                onTap: () {},
+                onTap: () async {
+                  cubit.addComment(
+                    data: {
+                      "comment": _commentController.text,
+                      "for_user": cubit.userID,
+                      "for_product": widget.product.productId,
+                      "firstName":
+                          context
+                              .read<AuthenticationCubit>()
+                              .userDataModel
+                              ?.firstName ??
+                          "User",
+                      "lastName":
+                          context
+                              .read<AuthenticationCubit>()
+                              .userDataModel
+                              ?.lastName ??
+                          "",
+                    },
+                  );
+                  _commentController.clear();
+                },
                 child: Container(
                   margin: EdgeInsets.only(left: 10),
                   child: Icon(Icons.send, color: AppColors.primaryColor),
@@ -288,5 +309,12 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
         backgroundColor: Colors.green,
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    _commentController.dispose();
+    // TODO: implement dispose
+    super.dispose();
   }
 }

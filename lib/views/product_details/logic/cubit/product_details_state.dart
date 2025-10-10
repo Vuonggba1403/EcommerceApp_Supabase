@@ -16,3 +16,9 @@ final class AddOrUpdateRateLoading extends ProductDetailsState {}
 final class AddOrUpdateRateSuccess extends ProductDetailsState {}
 
 final class AddOrUpdateRateFailure extends ProductDetailsState {}
+
+final class AddCommentLoading extends ProductDetailsState {}
+
+final class AddCommentSuccess extends ProductDetailsState {}
+
+final class AddCommentFailure extends ProductDetailsState {}
