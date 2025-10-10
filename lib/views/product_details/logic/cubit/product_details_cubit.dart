@@ -11,24 +11,13 @@ part 'product_details_state.dart';
 
 class ProductDetailsCubit extends Cubit<ProductDetailsState> {
   ProductDetailsCubit() : super(ProductDetailsInitial());
-
-  // Gọi API (qua Dio) thông qua class ApiServices
   final ApiServices _apiServices = ApiServices();
-
-  // Danh sách toàn bộ các đánh giá (rate) mà người dùng đã gửi cho sản phẩm này
+  String userID = Supabase.instance.client.auth.currentUser!.id;
   List<RateModels> rates = [];
-
-  // averageRate: trung bình số sao của tất cả người dùng đánh giá
   int averageRate = 0;
-
-  // userRate: số sao mà NGƯỜI DÙNG HIỆN TẠI đã đánh giá sản phẩm này
-  // Mặc định 5 (có thể thay đổi sau khi tải dữ liệu thật từ server)
   int userRate = 5;
-
-  // 👉 Hàm này dùng để tải toàn bộ đánh giá của một sản phẩm từ Supabase
   Future<void> getRates({required String productId}) async {
-    emit(GetRateLoading()); // Phát trạng thái "đang tải"
-
+    emit(GetRateLoading());
     try {
       // Gửi request GET tới bảng "rates_table" trong Supabase
       // Lấy tất cả record có "for_product" trùng với productId đang xem
@@ -40,13 +29,10 @@ class ProductDetailsCubit extends Cubit<ProductDetailsState> {
       for (var rate in response.data) {
         rates.add(RateModels.fromJson(rate));
       }
-
       // Gọi hàm để tính trung bình số sao của toàn bộ đánh giá
       _getAverageRate();
-
       // Lọc ra danh sách rate của riêng người dùng hiện tại (theo userId Supabase)
       _getUserRate();
-
       // // Log ra để kiểm tra
       // log("userRate Length = ${userRates.length}");
       // log("rate.forUser = ${rates[0].forUser}");
@@ -56,42 +42,62 @@ class ProductDetailsCubit extends Cubit<ProductDetailsState> {
       emit(GetRateSuccess()); // Thành công → UI hiển thị được
     } catch (e) {
       // Nếu lỗi → phát trạng thái lỗi
-      emit(GetRateError());
+      emit(GetRateFailure());
     }
   }
 
   _getUserRate() {
-    List<RateModels> userRates = rates
-        .where(
-          (rate) =>
-              rate.forUser == Supabase.instance.client.auth.currentUser!.id,
-        )
-        .toList();
-
+    List<RateModels> userRates = rates.where((rate) {
+      return rate.forUser == userID;
+    }).toList();
     // Nếu người dùng hiện tại đã từng đánh giá => lấy ra số sao họ đã cho
     if (userRates.isNotEmpty) {
       userRate = userRates[0].rate!;
-      // 🧠 Mối liên hệ:
       //   userRate là "rate" của riêng currentUser,
       //   còn averageRate là trung bình "rate" của tất cả mọi người.
     }
     return userRates;
   }
 
-  // 👉 Hàm này tính trung bình số sao (averageRate)
+  // trung bình số sao (averageRate)
   void _getAverageRate() {
-    // Duyệt toàn bộ các đánh giá của người dùng
     for (var userRate in rates) {
       if (userRate.rate != null) {
         averageRate += userRate.rate!;
       }
     }
-
-    // Tính trung bình (chia lấy phần nguyên, bỏ phần lẻ)
     averageRate = averageRate ~/ rates.length;
+  }
 
-    // 🧠 averageRate và userRate khác nhau:
-    //   - averageRate = trung bình sao của TẤT CẢ người dùng
-    //   - userRate = số sao mà NGƯỜI DÙNG HIỆN TẠI đã đánh giá
+  bool _isUserRateExist({required String productId}) {
+    for (var rate in rates) {
+      if (rate.forUser == userID && rate.forProduct == productId) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  Future<void> addOrUpdateUserRate({
+    required String productId,
+    required Map<String, dynamic> data,
+  }) async {
+    //user rate exist ==> update for user rate
+    //user doesn't exits ==> add rate
+    String path = "rates_table?for_user=eq.$userID&for_product=eq.$productId";
+    emit(AddOrUpdateLoading());
+    try {
+      if (_isUserRateExist(productId: productId)) {
+        //patch rate
+        await _apiServices.patchData(path, data);
+      } else {
+        // post Rate(),
+        await _apiServices.postData(path, data);
+      }
+      emit(AddOrUpdateSuccess());
+    } catch (e) {
+      log(e.toString());
+      emit(AddOrUpdateFailure());
+    }
   }
 }
