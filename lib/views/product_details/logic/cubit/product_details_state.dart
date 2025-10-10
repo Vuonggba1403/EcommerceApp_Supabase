@@ -11,8 +11,8 @@ final class GetRateSuccess extends ProductDetailsState {}
 
 final class GetRateFailure extends ProductDetailsState {}
 
-final class AddOrUpdateLoading extends ProductDetailsState {}
+final class AddOrUpdateRateLoading extends ProductDetailsState {}
 
-final class AddOrUpdateSuccess extends ProductDetailsState {}
+final class AddOrUpdateRateSuccess extends ProductDetailsState {}
 
-final class AddOrUpdateFailure extends ProductDetailsState {}
+final class AddOrUpdateRateFailure extends ProductDetailsState {}

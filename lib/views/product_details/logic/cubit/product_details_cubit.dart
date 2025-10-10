@@ -66,7 +66,9 @@ class ProductDetailsCubit extends Cubit<ProductDetailsState> {
         averageRate += userRate.rate!;
       }
     }
-    averageRate = averageRate ~/ rates.length;
+    if (rates.isNotEmpty) {
+      averageRate = averageRate ~/ rates.length;
+    }
   }
 
   bool _isUserRateExist({required String productId}) {
@@ -85,7 +87,7 @@ class ProductDetailsCubit extends Cubit<ProductDetailsState> {
     //user rate exist ==> update for user rate
     //user doesn't exits ==> add rate
     String path = "rates_table?for_user=eq.$userID&for_product=eq.$productId";
-    emit(AddOrUpdateLoading());
+    emit(AddOrUpdateRateLoading());
     try {
       if (_isUserRateExist(productId: productId)) {
         //patch rate
@@ -94,10 +96,10 @@ class ProductDetailsCubit extends Cubit<ProductDetailsState> {
         // post Rate(),
         await _apiServices.postData(path, data);
       }
-      emit(AddOrUpdateSuccess());
+      emit(AddOrUpdateRateSuccess());
     } catch (e) {
       log(e.toString());
-      emit(AddOrUpdateFailure());
+      emit(AddOrUpdateRateFailure());
     }
   }
 }

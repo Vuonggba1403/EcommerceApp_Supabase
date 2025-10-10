@@ -3,7 +3,7 @@ import 'package:e_commerce_app_supabase/core/components/custom_derlight_bar.dart
 import 'package:e_commerce_app_supabase/core/functions/app_colors.dart';
 import 'package:e_commerce_app_supabase/core/components/custom_button.dart';
 import 'package:e_commerce_app_supabase/core/components/custom_textfield.dart';
-import 'package:e_commerce_app_supabase/core/functions/loading_screen.dart';
+import 'package:e_commerce_app_supabase/core/functions/navigate_to.dart';
 import 'package:e_commerce_app_supabase/views/auth/login/logic/cubit/authentication_cubit.dart';
 import 'package:e_commerce_app_supabase/views/auth/login/ui/forgot_view.dart';
 import 'package:e_commerce_app_supabase/views/auth/login/ui/login_view.dart';
@@ -34,7 +34,7 @@ class _RegisterViewState extends State<RegisterView> {
             "Sign up successful",
             Icon(Icons.check, color: Colors.green),
           );
-          loadingScreen(context, () => const LoginView());
+          navigateTo(context, LoginView());
         }
         if (state is SignUpFailure) {
           showCustomDelightToastBar(
@@ -71,7 +71,7 @@ class _RegisterViewState extends State<RegisterView> {
                             ),
                             onPressed: () {
                               // Navigator.pop(context);
-                              loadingScreen(context, () => const LoginView());
+                              navigateTo(context, LoginView());
                             },
                             child: Icon(
                               Icons.arrow_back_ios,
@@ -137,9 +137,9 @@ class _RegisterViewState extends State<RegisterView> {
                               SizedBox(width: 5),
                               GestureDetector(
                                 onTap: () {
-                                  loadingScreen(
+                                  navigateTo(
                                     context,
-                                    () => const ForgotView(),
+                                    ForgotView(),
                                   );
                                 },
                                 child: Text(

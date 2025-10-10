@@ -1,6 +1,6 @@
 import 'package:e_commerce_app_supabase/core/components/custom_circle_proIndicator.dart';
 import 'package:e_commerce_app_supabase/core/components/custom_derlight_bar.dart';
-import 'package:e_commerce_app_supabase/core/functions/loading_screen.dart';
+import 'package:e_commerce_app_supabase/core/functions/navigate_to.dart';
 import 'package:e_commerce_app_supabase/core/models/user_models.dart';
 import 'package:e_commerce_app_supabase/views/auth/login/logic/cubit/authentication_cubit.dart';
 import 'package:e_commerce_app_supabase/views/auth/login/ui/login_view.dart';
@@ -25,7 +25,7 @@ class ProfileView extends StatelessWidget {
               "Logout successful",
               Icon(Icons.check, color: Colors.green),
             );
-            loadingScreen(context, () => const LoginView());
+            navigateTo(context, LoginView());
           }
           if (state is LogoutFailure) {
             showCustomDelightToastBar(

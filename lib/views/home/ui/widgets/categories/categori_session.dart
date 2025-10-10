@@ -1,4 +1,3 @@
-import 'package:e_commerce_app_supabase/core/functions/loading_screen.dart';
 import 'package:e_commerce_app_supabase/views/home/ui/widgets/categories/all_categories.dart';
 import 'package:flutter/material.dart';
 

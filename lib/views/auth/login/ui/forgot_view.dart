@@ -4,7 +4,7 @@ import 'package:e_commerce_app_supabase/core/components/custom_derlight_bar.dart
 import 'package:e_commerce_app_supabase/core/functions/app_colors.dart';
 import 'package:e_commerce_app_supabase/core/components/custom_button.dart';
 import 'package:e_commerce_app_supabase/core/components/custom_textfield.dart';
-import 'package:e_commerce_app_supabase/core/functions/loading_screen.dart';
+import 'package:e_commerce_app_supabase/core/functions/navigate_to.dart';
 import 'package:e_commerce_app_supabase/views/auth/login/logic/cubit/authentication_cubit.dart';
 import 'package:e_commerce_app_supabase/views/auth/login/ui/login_view.dart';
 import 'package:flutter/material.dart';
@@ -32,7 +32,7 @@ class _ForgotViewState extends State<ForgotView> {
             "Password reset email sent",
             Icon(Icons.check, color: Colors.green),
           );
-          loadingScreen(context, () => const LoginView());
+          navigateTo(context, LoginView());
         }
         if (state is PasswordResetFailure) {
           showCustomDelightToastBar(

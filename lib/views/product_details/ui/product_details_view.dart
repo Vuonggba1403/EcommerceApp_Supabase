@@ -2,6 +2,7 @@ import 'package:e_commerce_app_supabase/core/components/cache_images_view.dart';
 import 'package:e_commerce_app_supabase/core/components/custom_circle_proIndicator.dart';
 import 'package:e_commerce_app_supabase/core/components/custom_textfield.dart';
 import 'package:e_commerce_app_supabase/core/functions/app_colors.dart';
+import 'package:e_commerce_app_supabase/core/functions/navigate_to.dart';
 import 'package:e_commerce_app_supabase/core/models/product_model/product_model.dart';
 import 'package:e_commerce_app_supabase/views/product_details/logic/cubit/product_details_cubit.dart';
 import 'package:e_commerce_app_supabase/views/product_details/ui/widgets/color_selector.dart';
@@ -43,23 +44,26 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
           ProductDetailsCubit()..getRates(productId: widget.product.productId!),
       child: BlocConsumer<ProductDetailsCubit, ProductDetailsState>(
         listener: (context, state) {
-          // TODO: implement listener
+          if (state is AddOrUpdateRateSuccess) {
+            // navigateTo(context, this.widget);
+            context.read<ProductDetailsCubit>().getRates(
+              productId: widget.product.productId!,
+            );
+          }
         },
         builder: (context, state) {
           ProductDetailsCubit cubit = context.read<ProductDetailsCubit>();
-          return state is GetRateLoading
-              ? CustomCircleProgIndicator()
-              : Scaffold(
-                  backgroundColor: Colors.white,
-                  appBar: AppBar(
-                    title: Text(
-                      widget.product.productName ?? "Product Details",
-                    ),
-                    backgroundColor: AppColors.primaryColor,
-                    elevation: 0,
-                    foregroundColor: AppColors.secondColor,
-                  ),
-                  body: SafeArea(
+          return Scaffold(
+            backgroundColor: Colors.white,
+            appBar: AppBar(
+              title: Text(widget.product.productName ?? "Product Details"),
+              backgroundColor: AppColors.primaryColor,
+              elevation: 0,
+              foregroundColor: AppColors.secondColor,
+            ),
+            body: state is GetRateLoading || state is AddOrUpdateRateLoading
+                ? CustomCircleProgIndicator()
+                : SafeArea(
                     child: Column(
                       children: [
                         Expanded(
@@ -79,7 +83,7 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                       ],
                     ),
                   ),
-                );
+          );
         },
       ),
     );
@@ -165,7 +169,15 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                   itemBuilder: (context, _) =>
                       Icon(Icons.star, color: Colors.amber),
                   onRatingUpdate: (rating) {
-                    print(rating);
+                    // print(rating);
+                    cubit.addOrUpdateUserRate(
+                      productId: widget.product.productId!,
+                      data: {
+                        "rate": rating.toInt(),
+                        "for_user": cubit.userID,
+                        "for_product": widget.product.productId!,
+                      },
+                    );
                   },
                 ),
               ],

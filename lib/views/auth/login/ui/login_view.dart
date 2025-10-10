@@ -1,11 +1,12 @@
 import 'package:e_commerce_app_supabase/core/components/custom_circle_proIndicator.dart';
 import 'package:e_commerce_app_supabase/core/components/custom_derlight_bar.dart';
 import 'package:e_commerce_app_supabase/core/functions/app_colors.dart';
+import 'package:e_commerce_app_supabase/core/functions/navigate_to.dart';
 import 'package:e_commerce_app_supabase/views/auth/login/logic/cubit/authentication_cubit.dart';
 import 'package:e_commerce_app_supabase/views/auth/login/ui/forgot_view.dart';
 import 'package:e_commerce_app_supabase/core/components/custom_button.dart';
 import 'package:e_commerce_app_supabase/core/components/custom_textfield.dart';
-import 'package:e_commerce_app_supabase/core/functions/loading_screen.dart';
+
 import 'package:e_commerce_app_supabase/views/auth/login/ui/register_view.dart';
 import 'package:e_commerce_app_supabase/views/auth/nav_bar/ui/main_home_view.dart';
 import 'package:flutter/material.dart';
@@ -35,7 +36,7 @@ class _LoginViewState extends State<LoginView> {
             "Login successful",
             Icon(Icons.check, color: Colors.green),
           );
-          loadingScreen(context, () => const MainHomeView());
+          navigateTo(context, MainHomeView());
         }
         if (state is LoginFailure) {
           showCustomDelightToastBar(
@@ -96,10 +97,7 @@ class _LoginViewState extends State<LoginView> {
                           Align(
                             alignment: Alignment.centerRight,
                             child: GestureDetector(
-                              onTap: () => loadingScreen(
-                                context,
-                                () => const ForgotView(),
-                              ),
+                              onTap: () => navigateTo(context, ForgotView()),
                               child: const Text(
                                 "Forgot Password?",
                                 style: TextStyle(
@@ -134,10 +132,8 @@ class _LoginViewState extends State<LoginView> {
                             children: [
                               const Text("Don't have an Account? "),
                               GestureDetector(
-                                onTap: () => loadingScreen(
-                                  context,
-                                  () => const RegisterView(),
-                                ),
+                                onTap: () =>
+                                    navigateTo(context, RegisterView()),
                                 child: const Text(
                                   "Create One",
                                   style: TextStyle(fontWeight: FontWeight.bold),
