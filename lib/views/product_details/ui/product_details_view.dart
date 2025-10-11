@@ -204,13 +204,14 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                               .read<AuthenticationCubit>()
                               .userDataModel
                               ?.firstName ??
-                          "User",
+                          "firstName",
+
                       "lastName":
                           context
                               .read<AuthenticationCubit>()
                               .userDataModel
                               ?.lastName ??
-                          "",
+                          "lastName",
                     },
                   );
                   _commentController.clear();
@@ -227,7 +228,7 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
             "Comments",
             style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
           ),
-          CommentsList(),
+          CommentsList(productModel: widget.product),
         ],
       ),
     );
