@@ -194,7 +194,8 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
               ),
               GestureDetector(
                 onTap: () async {
-                  cubit.addComment(
+                  await context.read<AuthenticationCubit>().getUserData();
+                  await cubit.addComment(
                     data: {
                       "comment": _commentController.text,
                       "for_user": cubit.userID,

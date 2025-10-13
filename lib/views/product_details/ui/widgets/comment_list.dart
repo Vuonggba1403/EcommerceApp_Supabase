@@ -88,11 +88,11 @@ class UserComment extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "${commentData?['first_name'] ?? ''} ${commentData?['last_name'] ?? ''}"
+                      "${commentData?['firstName'] ?? ''} ${commentData?['lastName'] ?? ''}"
                               .trim()
                               .isEmpty
                           ? "User Name"
-                          : "${commentData?['first_name'] ?? ''} ${commentData?['last_name'] ?? ''}",
+                          : "${commentData?['firstName'] ?? ''} ${commentData?['lastName'] ?? ''}",
                       style: const TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 14,
