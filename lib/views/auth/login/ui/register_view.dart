@@ -45,11 +45,11 @@ class _RegisterViewState extends State<RegisterView> {
         }
       },
       builder: (context, state) {
-        return state is SignUpLoading
-            ? CustomCircleProgIndicator()
-            : Scaffold(
-                resizeToAvoidBottomInset: false,
-                body: SafeArea(
+        return Scaffold(
+          resizeToAvoidBottomInset: false,
+          body: state is SignUpLoading
+              ? CustomCircleProgIndicator()
+              : SafeArea(
                   child: SingleChildScrollView(
                     padding: const EdgeInsets.symmetric(
                       horizontal: 20,
@@ -137,10 +137,7 @@ class _RegisterViewState extends State<RegisterView> {
                               SizedBox(width: 5),
                               GestureDetector(
                                 onTap: () {
-                                  navigateTo(
-                                    context,
-                                    ForgotView(),
-                                  );
+                                  navigateTo(context, ForgotView());
                                 },
                                 child: Text(
                                   "Reset",
@@ -157,7 +154,7 @@ class _RegisterViewState extends State<RegisterView> {
                     ),
                   ),
                 ),
-              );
+        );
       },
     );
   }

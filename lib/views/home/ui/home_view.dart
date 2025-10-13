@@ -1,12 +1,9 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:e_commerce_app_supabase/core/components/custom_circle_proIndicator.dart';
+import 'package:e_commerce_app_supabase/core/components/custom_searchfield.dart';
 import 'package:e_commerce_app_supabase/core/cubit/home_cubit.dart';
 import 'package:e_commerce_app_supabase/core/functions/app_colors.dart';
-import 'package:e_commerce_app_supabase/core/components/cache_images_view.dart'
-    show CacheImagesView, CacheImage;
 import 'package:e_commerce_app_supabase/core/models/product_model/product_model.dart';
 import 'package:e_commerce_app_supabase/views/home/ui/widgets/categories/categori_session.dart';
-import 'package:e_commerce_app_supabase/views/home/ui/widgets/search_textfield.dart';
 import 'package:e_commerce_app_supabase/views/home/ui/widgets/sell_card.dart';
 import 'package:e_commerce_app_supabase/views/home/ui/widgets/top_selling_view.dart';
 import 'package:flutter/material.dart';
@@ -104,7 +101,7 @@ class _HomeViewState extends State<HomeView> {
                   ),
                   SizedBox(height: size.height * 0.03),
                   //Search
-                  const SearchField(),
+                  const CustomSearchField(),
                   SizedBox(height: size.height * 0.03),
                   // Category session
                   const CategorySession(),

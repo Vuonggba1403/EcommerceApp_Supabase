@@ -48,7 +48,6 @@ class _LoginViewState extends State<LoginView> {
       },
       builder: (context, state) {
         final cubit = context.read<AuthenticationCubit>();
-
         return Scaffold(
           resizeToAvoidBottomInset: true,
           body: state is LoginLoading

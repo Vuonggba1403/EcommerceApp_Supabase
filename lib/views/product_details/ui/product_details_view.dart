@@ -206,7 +206,6 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                               .userDataModel
                               ?.firstName ??
                           "firstName",
-
                       "lastName":
                           context
                               .read<AuthenticationCubit>()
@@ -231,21 +230,6 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
           ),
           CommentsList(productModel: widget.product),
         ],
-      ),
-    );
-  }
-
-  Widget _circleButton(IconData icon, VoidCallback onTap) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        width: 40,
-        height: 40,
-        decoration: const BoxDecoration(
-          color: AppColors.primaryColor,
-          shape: BoxShape.circle,
-        ),
-        child: Icon(icon, color: Colors.white),
       ),
     );
   }
@@ -278,7 +262,8 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
           const SizedBox(width: 20),
           Expanded(
             child: ElevatedButton(
-              onPressed: _addToCart,
+              // onPressed: _addToCart,
+              onPressed: () {},
               style: ElevatedButton.styleFrom(
                 backgroundColor: AppColors.primaryColor,
                 padding: const EdgeInsets.symmetric(vertical: 15),
@@ -301,17 +286,17 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
     );
   }
 
-  void _addToCart() {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(
-          'Added to cart: ${widget.product.productName} '
-          '(Size: $selectedSize, Qty: $quantity)',
-        ),
-        backgroundColor: Colors.green,
-      ),
-    );
-  }
+  // void _addToCart() {
+  //   ScaffoldMessenger.of(context).showSnackBar(
+  //     SnackBar(
+  //       content: Text(
+  //         'Added to cart: ${widget.product.productName} '
+  //         '(Size: $selectedSize, Qty: $quantity)',
+  //       ),
+  //       backgroundColor: Colors.green,
+  //     ),
+  //   );
+  // }
 
   @override
   void dispose() {

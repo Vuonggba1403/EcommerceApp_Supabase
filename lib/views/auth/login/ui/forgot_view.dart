@@ -43,11 +43,11 @@ class _ForgotViewState extends State<ForgotView> {
         }
       },
       builder: (context, state) {
-        return state is PasswordResetLoading
-            ? CustomCircleProgIndicator()
-            : Scaffold(
-                resizeToAvoidBottomInset: true,
-                body: SafeArea(
+        return Scaffold(
+          resizeToAvoidBottomInset: true,
+          body: state is PasswordResetLoading
+              ? CustomCircleProgIndicator()
+              : SafeArea(
                   child: SingleChildScrollView(
                     padding: const EdgeInsets.all(10.0),
                     child: Form(
@@ -107,7 +107,7 @@ class _ForgotViewState extends State<ForgotView> {
                     ),
                   ),
                 ),
-              );
+        );
       },
     );
   }

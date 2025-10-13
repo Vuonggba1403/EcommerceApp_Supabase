@@ -63,6 +63,9 @@ class UserComment extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final userName =
+        "${commentData?['firstName'] ?? ''} ${commentData?['lastName'] ?? ''}"
+            .trim();
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -88,11 +91,7 @@ class UserComment extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "${commentData?['firstName'] ?? ''} ${commentData?['lastName'] ?? ''}"
-                              .trim()
-                              .isEmpty
-                          ? "User Name"
-                          : "${commentData?['firstName'] ?? ''} ${commentData?['lastName'] ?? ''}",
+                      userName.isEmpty ? "User Name" : userName,
                       style: const TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 14,
