@@ -1,6 +1,6 @@
 import 'package:e_commerce_app_supabase/core/components/custom_circle_proIndicator.dart';
 import 'package:e_commerce_app_supabase/core/components/custom_searchfield.dart';
-import 'package:e_commerce_app_supabase/core/cubit/home_cubit.dart';
+import 'package:e_commerce_app_supabase/views/home/logic/cubit/home_cubit.dart';
 import 'package:e_commerce_app_supabase/core/functions/app_colors.dart';
 import 'package:e_commerce_app_supabase/core/models/product_model/product_model.dart';
 import 'package:e_commerce_app_supabase/views/home/ui/widgets/categories/categori_session.dart';

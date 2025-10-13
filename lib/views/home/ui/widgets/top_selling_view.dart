@@ -1,15 +1,16 @@
 import 'dart:developer';
 import 'package:e_commerce_app_supabase/core/components/cache_images_view.dart';
 import 'package:e_commerce_app_supabase/core/functions/app_colors.dart';
+import 'package:e_commerce_app_supabase/core/functions/format_currency.dart';
 import 'package:e_commerce_app_supabase/core/models/product_model/product_model.dart';
 import 'package:e_commerce_app_supabase/views/product_details/ui/product_details_view.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class TopSellingView extends StatelessWidget {
   const TopSellingView({Key? key, required this.products}) : super(key: key);
 
   final List<ProductModel> products;
-
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -32,7 +33,7 @@ class TopSellingView extends StatelessWidget {
 
         // --- Horizontal list of products ---
         SizedBox(
-          height: size.height * 0.4,
+          height: size.height * 0.45,
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
             itemCount: products.length,
@@ -52,7 +53,7 @@ class TopSellingView extends StatelessWidget {
                   );
                 },
                 child: Container(
-                  width: size.width * 0.45,
+                  width: size.width * 0.6,
                   margin: const EdgeInsets.symmetric(horizontal: 8.0),
                   decoration: BoxDecoration(
                     color: Colors.white,
@@ -97,7 +98,7 @@ class TopSellingView extends StatelessWidget {
                                   style: const TextStyle(
                                     color: Colors.white,
                                     fontWeight: FontWeight.bold,
-                                    fontSize: 12,
+                                    fontSize: 10,
                                   ),
                                 ),
                               ),
@@ -133,12 +134,12 @@ class TopSellingView extends StatelessWidget {
                         padding: const EdgeInsets.symmetric(horizontal: 8),
                         child: Row(
                           children: [
-                            Text("${product.price ?? "0"}VND"),
+                            Text("${formatCurrency(product.price) ?? "0"} VND"),
                             const SizedBox(width: 8),
                             if (product.oldSale != null &&
                                 product.oldSale!.isNotEmpty)
                               Text(
-                                "${product.oldSale} VND",
+                                "${formatCurrency(product.oldSale) ?? "0"} VND",
                                 style: const TextStyle(
                                   fontSize: 12,
                                   color: Colors.grey,

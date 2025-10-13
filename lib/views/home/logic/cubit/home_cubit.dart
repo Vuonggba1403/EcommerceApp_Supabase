@@ -12,6 +12,7 @@ class HomeCubit extends Cubit<HomeState> {
   final ApiServices _apiServices = ApiServices();
 
   List<ProductModel> products = [];
+  List<ProductModel> searchResults = [];
   Future<void> getProducts() async {
     emit((GetDataLoading()));
     try {
@@ -28,4 +29,6 @@ class HomeCubit extends Cubit<HomeState> {
       emit(GetDataFailure());
     }
   }
+
+  void search() {}
 }

@@ -2,6 +2,7 @@ import 'package:e_commerce_app_supabase/core/components/cache_images_view.dart';
 import 'package:e_commerce_app_supabase/core/components/custom_circle_proIndicator.dart';
 import 'package:e_commerce_app_supabase/core/components/custom_textfield.dart';
 import 'package:e_commerce_app_supabase/core/functions/app_colors.dart';
+import 'package:e_commerce_app_supabase/core/functions/format_currency.dart';
 import 'package:e_commerce_app_supabase/core/functions/naviga_with_back.dart';
 import 'package:e_commerce_app_supabase/core/models/product_model/product_model.dart';
 import 'package:e_commerce_app_supabase/views/auth/login/logic/cubit/authentication_cubit.dart';
@@ -96,12 +97,12 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            widget.product.productName ?? "Unnamed Product",
+            (widget.product.productName) ?? "Unnamed Product",
             style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 8),
           Text(
-            "${widget.product.price ?? '0'} VND",
+            "${formatCurrency(widget.product.price) ?? '0'} VND",
             style: const TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.bold,
