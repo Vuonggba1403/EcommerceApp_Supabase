@@ -19,15 +19,27 @@ class HomeCubit extends Cubit<HomeState> {
       Response response = await _apiServices.getData(
         "products_table?select=*,favorite_products(*),purchase_table(*)",
       );
-      
+
       for (var product in response.data) {
         products.add(ProductModel.fromJson(product));
       }
-      
+
       emit(GetDataSuccess());
     } catch (e) {
       log(e.toString());
       emit(GetDataFailure());
     }
+  }
+
+  List<ProductModel> searchProducts(String query) {
+    if (query.isEmpty) return products;
+
+    return products
+        .where(
+          (p) => (p.productName?.toLowerCase() ?? '').contains(
+            query.toLowerCase(),
+          ),
+        )
+        .toList();
   }
 }

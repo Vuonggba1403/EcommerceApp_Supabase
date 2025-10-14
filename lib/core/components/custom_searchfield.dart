@@ -1,20 +1,11 @@
 import 'package:e_commerce_app_supabase/core/functions/app_colors.dart';
-import 'package:e_commerce_app_supabase/core/functions/navigate_to.dart';
-import 'package:e_commerce_app_supabase/views/home/logic/cubit/home_cubit.dart';
-import 'package:e_commerce_app_supabase/views/home/ui/widgets/search_view.dart';
 import 'package:flutter/material.dart';
 
 class CustomSearchField extends StatelessWidget {
-  const CustomSearchField({
-    super.key,
-    this.controller,
-    this.onPressed,
-    required this.homeCubit, // Thêm tham số này
-  });
+  const CustomSearchField({super.key, this.controller, this.onTap});
 
   final TextEditingController? controller;
-  final void Function()? onPressed;
-  final HomeCubit homeCubit;
+  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -23,13 +14,7 @@ class CustomSearchField extends StatelessWidget {
       child: Material(
         color: Colors.transparent,
         child: GestureDetector(
-          onTap: () => navigateTo(
-            context,
-            SearchView(
-              query: controller?.text ?? '',
-              homeCubit: homeCubit, // Truyền homeCubit
-            ),
-          ),
+          onTap: onTap,
           child: Container(
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
             decoration: BoxDecoration(

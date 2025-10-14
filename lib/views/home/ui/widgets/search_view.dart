@@ -3,11 +3,11 @@ import 'package:e_commerce_app_supabase/core/functions/app_colors.dart';
 import 'package:e_commerce_app_supabase/views/home/logic/cubit/home_cubit.dart';
 import 'package:e_commerce_app_supabase/core/models/product_model/product_model.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class SearchView extends StatefulWidget {
-  const SearchView({super.key, required this.query, required this.homeCubit});
-  final String query;
-  final HomeCubit homeCubit; // Thêm tham số này
+  const SearchView({super.key, this.initialQuery});
+  final String? initialQuery;
 
   @override
   State<SearchView> createState() => _SearchViewState();
@@ -21,8 +21,10 @@ class _SearchViewState extends State<SearchView> {
   @override
   void initState() {
     super.initState();
-    _searchController = TextEditingController(text: widget.query);
-    _performSearch();
+    _searchController = TextEditingController(text: widget.initialQuery ?? '');
+    if (widget.initialQuery != null && widget.initialQuery!.isNotEmpty) {
+      _performSearch();
+    }
   }
 
   @override
@@ -32,18 +34,22 @@ class _SearchViewState extends State<SearchView> {
   }
 
   void _performSearch() {
+    final query = _searchController.text.trim();
+
+    if (query.isEmpty) {
+      setState(() {
+        _searchResults = [];
+        _isSearching = false;
+      });
+      return;
+    }
+
     setState(() {
       _isSearching = true;
     });
 
-    // Sử dụng homeCubit từ widget thay vì context.read
-    final results = widget.homeCubit.products
-        .where(
-          (p) => (p.productName?.toLowerCase() ?? '').contains(
-            _searchController.text.toLowerCase(),
-          ),
-        )
-        .toList();
+    final cubit = context.read<HomeCubit>();
+    final results = cubit.searchProducts(query);
 
     setState(() {
       _searchResults = results;
@@ -69,6 +75,7 @@ class _SearchViewState extends State<SearchView> {
             child: TextField(
               controller: _searchController,
               autofocus: true,
+              onChanged: (_) => _performSearch(),
               onSubmitted: (_) => _performSearch(),
               decoration: InputDecoration(
                 hintText: 'Search products...',
@@ -119,7 +126,7 @@ class _SearchViewState extends State<SearchView> {
       ),
       body: _isSearching
           ? const Center(child: CircularProgressIndicator())
-          : _searchResults.isEmpty
+          : _searchResults.isEmpty && _searchController.text.isNotEmpty
           ? _buildNoResultView()
           : _buildResultList(),
     );
@@ -145,9 +152,7 @@ class _SearchViewState extends State<SearchView> {
             ),
             const SizedBox(height: 40),
             ElevatedButton(
-              onPressed: () {
-                // Navigate to categories
-              },
+              onPressed: () => Navigator.pop(context),
               style: ElevatedButton.styleFrom(
                 backgroundColor: const Color(0xFF7C4DFF),
                 foregroundColor: Colors.white,
@@ -161,7 +166,7 @@ class _SearchViewState extends State<SearchView> {
                 elevation: 0,
               ),
               child: const Text(
-                'Explore Categories',
+                'Back to Home',
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
               ),
             ),
@@ -172,13 +177,35 @@ class _SearchViewState extends State<SearchView> {
   }
 
   Widget _buildResultList() {
-    final size = MediaQuery.of(context).size;
+    if (_searchResults.isEmpty) {
+      return Center(
+        child: Padding(
+          padding: const EdgeInsets.all(24.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              // Search icon
+              Image.asset('assets/search.png', width: 100, height: 100),
+              const SizedBox(height: 20),
+              // Message
+              const Text(
+                'Sorry, we couldn\'t find any matching result for your Search.',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 18,
+                  color: Colors.black87,
+                  height: 1.5,
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
+    }
+
     return Padding(
       padding: const EdgeInsets.all(16),
-      child: SizedBox(
-        height: size.height * 0.45,
-        child: ProductList(products: _searchResults),
-      ),
+      child: ProductList(products: _searchResults),
     );
   }
 }

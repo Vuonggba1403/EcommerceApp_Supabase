@@ -29,127 +29,132 @@ class _HomeViewState extends State<HomeView> {
     final size = MediaQuery.of(context).size;
 
     return BlocProvider(
-      create: (context) => HomeCubit()..getProducts(), // Loại bỏ query parameter
-      child: Scaffold(
-        body: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 15.0,
-              vertical: 20.0,
-            ),
-            child: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // Avatar + Dropdown + Icon
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      create: (context) => HomeCubit()..getProducts(),
+      child: Builder(
+        builder: (context) {
+          // Lấy cubit trong scope của BlocProvider
+          final homeCubit = context.read<HomeCubit>();
+
+          return Scaffold(
+            body: SafeArea(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 15.0,
+                  vertical: 20.0,
+                ),
+                child: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Container(
-                        padding: const EdgeInsets.all(2),
-                        decoration: const BoxDecoration(
-                          color: Colors.black,
-                          shape: BoxShape.circle,
-                        ),
-                        child: const CircleAvatar(
-                          radius: 22,
-                          backgroundImage: AssetImage('assets/user_images.png'),
-                        ),
-                      ),
-                      Flexible(
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 12,
-                            vertical: 6,
-                          ),
-                          decoration: BoxDecoration(
-                            color: Colors.grey.shade200,
-                            borderRadius: BorderRadius.circular(40),
-                          ),
-                          child: DropdownButtonHideUnderline(
-                            child: DropdownButton<String>(
-                              value: selectedCategory,
-                              items: categories.map((String item) {
-                                return DropdownMenuItem<String>(
-                                  value: item,
-                                  child: Text(
-                                    item,
-                                    style: const TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                );
-                              }).toList(),
-                              onChanged: (value) {
-                                setState(() {
-                                  selectedCategory = value!;
-                                });
-                              },
-                              icon: const Icon(Icons.keyboard_arrow_down),
+                      // Avatar + Dropdown + Icon
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Container(
+                            padding: const EdgeInsets.all(2),
+                            decoration: const BoxDecoration(
+                              color: Colors.black,
+                              shape: BoxShape.circle,
+                            ),
+                            child: const CircleAvatar(
+                              radius: 22,
+                              backgroundImage: AssetImage(
+                                'assets/user_images.png',
+                              ),
                             ),
                           ),
-                        ),
+                          Flexible(
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 12,
+                                vertical: 6,
+                              ),
+                              decoration: BoxDecoration(
+                                color: Colors.grey.shade200,
+                                borderRadius: BorderRadius.circular(40),
+                              ),
+                              child: DropdownButtonHideUnderline(
+                                child: DropdownButton<String>(
+                                  value: selectedCategory,
+                                  items: categories.map((String item) {
+                                    return DropdownMenuItem<String>(
+                                      value: item,
+                                      child: Text(
+                                        item,
+                                        style: const TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    );
+                                  }).toList(),
+                                  onChanged: (value) {
+                                    setState(() {
+                                      selectedCategory = value!;
+                                    });
+                                  },
+                                  icon: const Icon(Icons.keyboard_arrow_down),
+                                ),
+                              ),
+                            ),
+                          ),
+                          Container(
+                            padding: const EdgeInsets.all(10),
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: AppColors.primaryColor,
+                            ),
+                            child: const Icon(
+                              Icons.propane_tank_outlined,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ],
                       ),
-                      Container(
-                        padding: const EdgeInsets.all(10),
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: AppColors.primaryColor,
-                        ),
-                        child: const Icon(
-                          Icons.propane_tank_outlined,
-                          color: Colors.white,
-                        ),
+                      SizedBox(height: size.height * 0.03),
+                      //Search
+                      GestureDetector(
+                        onTap: () {
+                          // Wrap SearchView với BlocProvider.value
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => BlocProvider.value(
+                                value: homeCubit,
+                                child: SearchView(
+                                  initialQuery: _searchController.text,
+                                ),
+                              ),
+                            ),
+                          );
+                        },
+                        child: CustomSearchField(controller: _searchController),
                       ),
+                      SizedBox(height: size.height * 0.03),
+                      // Category session
+                      const CategorySession(),
+                      SizedBox(height: size.height * 0.03),
+                      // Top selling
+                      BlocBuilder<HomeCubit, HomeState>(
+                        builder: (context, state) {
+                          final products = homeCubit.products;
+
+                          if (state is GetDataLoading) {
+                            return CustomCircleProgIndicator();
+                          }
+
+                          return TopSellingView(products: products);
+                        },
+                      ),
+                      SizedBox(height: size.height * 0.03),
+                      // Cached Images
+                      SellProductCard(),
                     ],
                   ),
-                  SizedBox(height: size.height * 0.03),
-                  //Search
-                  Builder(
-                    builder: (context) {
-                      final homeCubit = context.read<HomeCubit>();
-                      return CustomSearchField(
-                        controller: _searchController,
-                        homeCubit: homeCubit,
-                        onPressed: () {
-                          if (_searchController.text.isNotEmpty) {
-                            navigateTo(
-                              context,
-                              SearchView(
-                                query: _searchController.text,
-                                homeCubit: homeCubit,
-                              ),
-                            );
-                            _searchController.clear();
-                          }
-                        },
-                      );
-                    },
-                  ),
-                  SizedBox(height: size.height * 0.03),
-                  // Category session
-                  const CategorySession(),
-                  SizedBox(height: size.height * 0.03),
-                  // Top selling
-                  BlocBuilder<HomeCubit, HomeState>(
-                    builder: (context, state) {
-                      final products = context.read<HomeCubit>().products;
-
-                      if (state is GetDataLoading) {
-                        return CustomCircleProgIndicator();
-                      }
-
-                      return TopSellingView(products: products);
-                    },
-                  ),
-                  SizedBox(height: size.height * 0.03),
-                  // Cached Images
-                  SellProductCard(),
-                ],
+                ),
               ),
             ),
-          ),
-        ),
+          );
+        },
       ),
     );
   }
