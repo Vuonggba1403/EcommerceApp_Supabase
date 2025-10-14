@@ -1,16 +1,19 @@
 import 'package:e_commerce_app_supabase/core/components/custom_circle_proIndicator.dart';
 import 'package:e_commerce_app_supabase/core/components/custom_searchfield.dart';
+import 'package:e_commerce_app_supabase/core/functions/navigate_to.dart';
 import 'package:e_commerce_app_supabase/views/home/logic/cubit/home_cubit.dart';
 import 'package:e_commerce_app_supabase/core/functions/app_colors.dart';
 import 'package:e_commerce_app_supabase/core/models/product_model/product_model.dart';
 import 'package:e_commerce_app_supabase/views/home/ui/widgets/categories/categori_session.dart';
+import 'package:e_commerce_app_supabase/views/home/ui/widgets/search_view.dart';
 import 'package:e_commerce_app_supabase/views/home/ui/widgets/sell_card.dart';
 import 'package:e_commerce_app_supabase/views/home/ui/widgets/top_selling_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class HomeView extends StatefulWidget {
-  const HomeView({super.key});
+  const HomeView({super.key, required this.query});
+  final String? query; // Giữ lại nếu cần filter từ deep link
 
   @override
   State<HomeView> createState() => _HomeViewState();
@@ -19,13 +22,14 @@ class HomeView extends StatefulWidget {
 class _HomeViewState extends State<HomeView> {
   String selectedCategory = "Men";
   final categories = ["Men", "Women", "Kids"];
+  final TextEditingController _searchController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
 
     return BlocProvider(
-      create: (context) => HomeCubit()..getProducts(),
+      create: (context) => HomeCubit()..getProducts(), // Loại bỏ query parameter
       child: Scaffold(
         body: SafeArea(
           child: Padding(
@@ -101,23 +105,41 @@ class _HomeViewState extends State<HomeView> {
                   ),
                   SizedBox(height: size.height * 0.03),
                   //Search
-                  const CustomSearchField(),
+                  Builder(
+                    builder: (context) {
+                      final homeCubit = context.read<HomeCubit>();
+                      return CustomSearchField(
+                        controller: _searchController,
+                        homeCubit: homeCubit,
+                        onPressed: () {
+                          if (_searchController.text.isNotEmpty) {
+                            navigateTo(
+                              context,
+                              SearchView(
+                                query: _searchController.text,
+                                homeCubit: homeCubit,
+                              ),
+                            );
+                            _searchController.clear();
+                          }
+                        },
+                      );
+                    },
+                  ),
                   SizedBox(height: size.height * 0.03),
                   // Category session
                   const CategorySession(),
                   SizedBox(height: size.height * 0.03),
                   // Top selling
-                  BlocConsumer<HomeCubit, HomeState>(
-                    listener: (context, state) {
-                      // TODO: implement listener
-                    },
+                  BlocBuilder<HomeCubit, HomeState>(
                     builder: (context, state) {
-                      List<ProductModel> products = context
-                          .read<HomeCubit>()
-                          .products;
-                      return state is GetDataLoading
-                          ? CustomCircleProgIndicator()
-                          : TopSellingView(products: products);
+                      final products = context.read<HomeCubit>().products;
+
+                      if (state is GetDataLoading) {
+                        return CustomCircleProgIndicator();
+                      }
+
+                      return TopSellingView(products: products);
                     },
                   ),
                   SizedBox(height: size.height * 0.03),
@@ -130,5 +152,11 @@ class _HomeViewState extends State<HomeView> {
         ),
       ),
     );
+  }
+
+  @override
+  dispose() {
+    _searchController.dispose();
+    super.dispose();
   }
 }

@@ -1,17 +1,20 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_nav_bar/google_nav_bar.dart';
+
 import 'package:e_commerce_app_supabase/core/functions/app_colors.dart';
 import 'package:e_commerce_app_supabase/views/auth/nav_bar/logic/cubit/nav_bar_cubit.dart';
+import 'package:e_commerce_app_supabase/views/cart/ui/cart_view.dart';
 import 'package:e_commerce_app_supabase/views/favorite/ui/favorite_view.dart';
 import 'package:e_commerce_app_supabase/views/home/ui/home_view.dart';
 import 'package:e_commerce_app_supabase/views/profiles/ui/profile_view.dart';
-import 'package:e_commerce_app_supabase/views/cart/ui/cart_view.dart';
-import 'package:flutter/material.dart';
-import 'package:google_nav_bar/google_nav_bar.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 class MainHomeView extends StatefulWidget {
-  const MainHomeView({super.key});
+  const MainHomeView({Key? key}) : super(key: key);
+
   final List<Widget> views = const [
-    HomeView(),
+    HomeView(query: null),
     FavoriteView(),
     CartView(),
     ProfileView(),
