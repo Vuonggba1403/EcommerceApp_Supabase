@@ -1,11 +1,25 @@
 part of 'home_cubit.dart';
 
-sealed class HomeState {}
+abstract class HomeState {}
 
-final class HomeCubitInitial extends HomeState {}
+class HomeCubitInitial extends HomeState {}
 
-final class GetDataLoading extends HomeState {}
+// Loading data from API
+class GetDataLoading extends HomeState {}
 
-final class GetDataSuccess extends HomeState {}
+class GetDataSuccess extends HomeState {
+  final List<ProductModel> products;
+  GetDataSuccess(this.products);
+}
 
-final class GetDataFailure extends HomeState {}
+class GetDataFailure extends HomeState {}
+
+// Search States
+class SearchLoading extends HomeState {}
+
+class SearchSuccess extends HomeState {
+  final List<ProductModel> results;
+  SearchSuccess(this.results);
+}
+
+class SearchCleared extends HomeState {}

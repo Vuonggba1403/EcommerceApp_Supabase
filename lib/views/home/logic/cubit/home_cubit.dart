@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:e_commerce_app_supabase/core/functions/api_services.dart';
@@ -9,9 +8,10 @@ part 'home_state.dart';
 
 class HomeCubit extends Cubit<HomeState> {
   HomeCubit() : super(HomeCubitInitial());
-  final ApiServices _apiServices = ApiServices();
 
+  final ApiServices _apiServices = ApiServices();
   List<ProductModel> products = [];
+  List<ProductModel> searchResults = [];
 
   Future<void> getProducts() async {
     emit(GetDataLoading());
@@ -20,26 +20,37 @@ class HomeCubit extends Cubit<HomeState> {
         "products_table?select=*,favorite_products(*),purchase_table(*)",
       );
 
-      for (var product in response.data) {
-        products.add(ProductModel.fromJson(product));
-      }
+      products = (response.data as List)
+          .map((product) => ProductModel.fromJson(product))
+          .toList();
 
-      emit(GetDataSuccess());
+      emit(GetDataSuccess(products));
     } catch (e) {
       log(e.toString());
       emit(GetDataFailure());
     }
   }
 
-  List<ProductModel> searchProducts(String query) {
-    if (query.isEmpty) return products;
+  // 🔍 Hàm search sản phẩm
+  void searchProducts(String query) {
+    emit(SearchLoading());
 
-    return products
-        .where(
-          (p) => (p.productName?.toLowerCase() ?? '').contains(
-            query.toLowerCase(),
-          ),
-        )
-        .toList();
+    if (query.isEmpty) {
+      emit(SearchSuccess([])); // Không có query thì trả về danh sách rỗng
+      return;
+    }
+
+    final lowerQuery = query.toLowerCase();
+    searchResults = products.where((p) {
+      final name = (p.productName ?? '').toLowerCase();
+      return name.contains(lowerQuery);
+    }).toList();
+
+    emit(SearchSuccess(searchResults));
+  }
+
+  void clearSearch() {
+    searchResults.clear();
+    emit(SearchCleared());
   }
 }

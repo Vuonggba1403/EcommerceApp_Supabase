@@ -1,6 +1,7 @@
 import 'package:e_commerce_app_supabase/core/components/custom_backbutton.dart'
     show CustomBackbutton;
 import 'package:e_commerce_app_supabase/core/components/custom_card.dart';
+import 'package:e_commerce_app_supabase/core/functions/navigate_to.dart';
 import 'package:e_commerce_app_supabase/views/home/ui/widgets/categories/categori_details_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -30,13 +31,11 @@ class AllCategories extends StatelessWidget {
                   itemBuilder: (context, index) {
                     final cat = categories[index];
                     return GestureDetector(
-                      onTap: () => Navigator.push(
+                      onTap: () => navigateTo(
                         context,
-                        MaterialPageRoute(
-                          builder: (context) =>
-                              CategoriesDetailView(category: cat),
-                        ),
+                        CategoriesDetailView(category: cat),
                       ),
+
                       child: CustomCard(
                         img: Image.asset(cat["image"]!),
                         text: cat["title"]!,

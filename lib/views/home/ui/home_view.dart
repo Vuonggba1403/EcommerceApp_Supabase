@@ -115,14 +115,13 @@ class _HomeViewState extends State<HomeView> {
                       GestureDetector(
                         onTap: () {
                           // Wrap SearchView với BlocProvider.value
-                          Navigator.push(
+
+                          navigateTo(
                             context,
-                            MaterialPageRoute(
-                              builder: (_) => BlocProvider.value(
-                                value: homeCubit,
-                                child: SearchView(
-                                  initialQuery: _searchController.text,
-                                ),
+                            BlocProvider.value(
+                              value: homeCubit,
+                              child: SearchView(
+                                initialQuery: _searchController.text,
                               ),
                             ),
                           );

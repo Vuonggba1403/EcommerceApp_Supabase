@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:e_commerce_app_supabase/core/components/cache_images_view.dart';
 import 'package:e_commerce_app_supabase/core/functions/app_colors.dart';
 import 'package:e_commerce_app_supabase/core/functions/format_currency.dart';
+import 'package:e_commerce_app_supabase/core/functions/navigate_to.dart';
 import 'package:e_commerce_app_supabase/core/models/product_model/product_model.dart';
 import 'package:e_commerce_app_supabase/views/product_details/ui/product_details_view.dart';
 import 'package:flutter/material.dart';
@@ -27,12 +28,8 @@ class ProductList extends StatelessWidget {
           return GestureDetector(
             onTap: () {
               log("Clicked on: ${product.productName}");
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => ProductDetailsView(product: product),
-                ),
-              );
+
+              navigateTo(context, ProductDetailsView(product: product));
             },
             child: Container(
               width: size.width * 0.6,
