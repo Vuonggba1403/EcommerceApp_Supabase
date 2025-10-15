@@ -14,7 +14,6 @@ class HomeCubit extends Cubit<HomeState> {
   final String userId = Supabase.instance.client.auth.currentUser!.id;
 
   List<ProductModel> products = [];
-  List<String> favoriteProductIds = []; // 🔥 danh sách id sản phẩm yêu thích
 
   /// 🧩 Lấy danh sách tất cả sản phẩm
   Future<void> getProducts() async {
@@ -26,15 +25,6 @@ class HomeCubit extends Cubit<HomeState> {
 
       products = (response.data as List)
           .map((product) => ProductModel.fromJson(product))
-          .toList();
-
-      // ✅ Lấy danh sách id sản phẩm yêu thích của user hiện tại
-      final favRes = await _apiServices.getData(
-        "favorite_products?select=product_id&for_user=eq.$userId",
-      );
-
-      favoriteProductIds = (favRes.data as List)
-          .map((item) => item['product_id'] as String)
           .toList();
 
       emit(GetDataSuccess(products));
@@ -86,6 +76,9 @@ class HomeCubit extends Cubit<HomeState> {
   }
 
   /// ❤️ Thêm sản phẩm vào danh sách yêu thích
+  Map<String, bool> favoriteProducts = {};
+  // "product_id" : true
+  // add To Favorite
   Future<void> addToFavorite(String productId) async {
     emit(addToFavoriteLoading());
     try {
@@ -94,16 +87,32 @@ class HomeCubit extends Cubit<HomeState> {
         "for_user": userId,
         "for_product": productId,
       });
-      favoriteProductIds.add(productId);
+      // await getProducts();
+      favoriteProducts.addAll({productId: true});
       emit(addToFavoriteSuccess());
     } catch (e) {
-      log("❌ Error adding to favorite: $e");
+      log(e.toString());
       emit(addToFavoriteFailure());
     }
   }
 
   /// 🧠 Kiểm tra sản phẩm có được yêu thích không
-  bool isFavorite(String productId) {
-    return favoriteProductIds.contains(productId);
+  bool checkIsFavorite(String productId) {
+    return favoriteProducts.containsKey(productId);
+  }
+
+  /// 💔 Xóa sản phẩm khỏi danh sách yêu thích
+  Future<void> removeFromFavorite(String productId) async {
+    emit(removeFromFavoriteLoading());
+    try {
+      await _apiServices.deleteData(
+        "favorite_products?for_user=eq.$userId&for_product=eq.$productId",
+      );
+      favoriteProducts.removeWhere((key, value) => key == productId);
+      emit(removeFromFavoriteSuccess());
+    } catch (e) {
+      log(e.toString());
+      emit(removeFromFavoriteFailure());
+    }
   }
 }

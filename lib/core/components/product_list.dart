@@ -1,5 +1,6 @@
 import 'dart:developer';
 import 'package:e_commerce_app_supabase/core/components/cache_images_view.dart';
+import 'package:e_commerce_app_supabase/core/components/custom_derlight_bar.dart';
 import 'package:e_commerce_app_supabase/core/functions/app_colors.dart';
 import 'package:e_commerce_app_supabase/core/functions/format_currency.dart';
 import 'package:e_commerce_app_supabase/core/functions/navigate_to.dart';
@@ -27,9 +28,33 @@ class ProductList extends StatelessWidget {
         itemBuilder: (context, index) {
           final product = products[index];
 
-          return BlocBuilder<HomeCubit, HomeState>(
+          return BlocConsumer<HomeCubit, HomeState>(
+            listener: (BuildContext context, HomeState state) {
+              if (state is addToFavoriteFailure ||
+                  state is removeFromFavoriteFailure) {
+                showCustomDelightToastBar(
+                  context,
+                  "Error",
+                  Icon(Icons.error, color: Colors.white),
+                );
+              }
+              if (state is addToFavoriteSuccess) {
+                showCustomDelightToastBar(
+                  context,
+                  "Add Successful !",
+                  Icon(Icons.check, color: Colors.white),
+                );
+              }
+              if (state is removeFromFavoriteSuccess) {
+                showCustomDelightToastBar(
+                  context,
+                  "Remove Successful !",
+                  Icon(Icons.check, color: Colors.white),
+                );
+              }
+            },
             builder: (context, state) {
-              final isFav = cubit.isFavorite(product.productId ?? "");
+              final isFav = cubit.checkIsFavorite(product.productId ?? "");
 
               return GestureDetector(
                 onTap: () {
@@ -95,8 +120,9 @@ class ProductList extends StatelessWidget {
                             child: GestureDetector(
                               onTap: () async {
                                 final id = product.productId ?? "";
-                                if (cubit.isFavorite(id)) {
-                                  // await cubit.removeFromFavorite(id);
+
+                                if (cubit.checkIsFavorite(id)) {
+                                  await cubit.removeFromFavorite(id);
                                 } else {
                                   await cubit.addToFavorite(id);
                                 }
