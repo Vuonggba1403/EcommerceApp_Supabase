@@ -14,7 +14,7 @@ class MainHomeView extends StatefulWidget {
   const MainHomeView({Key? key}) : super(key: key);
 
   final List<Widget> views = const [
-    HomeView(query: null),
+    HomeView(), // ✅ Không truyền query
     FavoriteView(),
     CartView(),
     ProfileView(),

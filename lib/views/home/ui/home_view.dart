@@ -3,7 +3,6 @@ import 'package:e_commerce_app_supabase/core/components/custom_searchfield.dart'
 import 'package:e_commerce_app_supabase/core/functions/navigate_to.dart';
 import 'package:e_commerce_app_supabase/views/home/logic/cubit/home_cubit.dart';
 import 'package:e_commerce_app_supabase/core/functions/app_colors.dart';
-import 'package:e_commerce_app_supabase/core/models/product_model/product_model.dart';
 import 'package:e_commerce_app_supabase/views/home/ui/widgets/categories/categori_session.dart';
 import 'package:e_commerce_app_supabase/views/home/ui/widgets/search_view.dart';
 import 'package:e_commerce_app_supabase/views/home/ui/widgets/sell_card.dart';
@@ -12,8 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class HomeView extends StatefulWidget {
-  const HomeView({super.key, required this.query});
-  final String? query; // Giữ lại nếu cần filter từ deep link
+  const HomeView({super.key}); // ✅ Loại bỏ query parameter
 
   @override
   State<HomeView> createState() => _HomeViewState();
@@ -112,10 +110,9 @@ class _HomeViewState extends State<HomeView> {
                       ),
                       SizedBox(height: size.height * 0.03),
                       //Search
-                      GestureDetector(
+                      CustomSearchField(
+                        controller: _searchController,
                         onTap: () {
-                          // Wrap SearchView với BlocProvider.value
-
                           navigateTo(
                             context,
                             BlocProvider.value(
@@ -126,7 +123,6 @@ class _HomeViewState extends State<HomeView> {
                             ),
                           );
                         },
-                        child: CustomSearchField(controller: _searchController),
                       ),
                       SizedBox(height: size.height * 0.03),
                       // Category session

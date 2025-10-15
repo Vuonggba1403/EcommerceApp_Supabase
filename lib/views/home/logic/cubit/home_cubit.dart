@@ -11,12 +11,12 @@ class HomeCubit extends Cubit<HomeState> {
 
   final ApiServices _apiServices = ApiServices();
   List<ProductModel> products = [];
-  List<ProductModel> searchResults = [];
 
+  /// 🧩 Lấy danh sách tất cả sản phẩm
   Future<void> getProducts() async {
     emit(GetDataLoading());
     try {
-      Response response = await _apiServices.getData(
+      final response = await _apiServices.getData(
         "products_table?select=*,favorite_products(*),purchase_table(*)",
       );
 
@@ -26,31 +26,49 @@ class HomeCubit extends Cubit<HomeState> {
 
       emit(GetDataSuccess(products));
     } catch (e) {
-      log(e.toString());
-      emit(GetDataFailure());
+      log("❌ Error fetching products: $e");
+      emit(GetDataFailure(e.toString()));
     }
   }
 
-  // 🔍 Hàm search sản phẩm
+  /// 🔍 Tìm kiếm theo từ khóa
   void searchProducts(String query) {
     emit(SearchLoading());
 
-    if (query.isEmpty) {
-      emit(SearchSuccess([])); // Không có query thì trả về danh sách rỗng
+    if (query.trim().isEmpty) {
+      emit(SearchSuccess([]));
       return;
     }
 
     final lowerQuery = query.toLowerCase();
-    searchResults = products.where((p) {
+    final results = products.where((p) {
       final name = (p.productName ?? '').toLowerCase();
       return name.contains(lowerQuery);
     }).toList();
 
-    emit(SearchSuccess(searchResults));
+    emit(SearchSuccess(results));
   }
 
+  /// ❌ Xóa kết quả tìm kiếm
   void clearSearch() {
-    searchResults.clear();
     emit(SearchCleared());
+  }
+
+  /// 🏷️ Lọc sản phẩm theo danh mục (category)
+  void searchByCategory(String category) {
+    emit(CategoryFilterLoading());
+
+    if (category.trim().isEmpty) {
+      emit(CategoryFilterSuccess(products));
+      return;
+    }
+
+    final lowerCategory = category.trim().toLowerCase();
+    final filtered = products.where((p) {
+      final productCategory = (p.category ?? '').trim().toLowerCase();
+      return productCategory == lowerCategory;
+    }).toList();
+
+    emit(CategoryFilterSuccess(filtered));
   }
 }

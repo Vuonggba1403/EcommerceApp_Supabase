@@ -1,3 +1,4 @@
+import 'package:e_commerce_app_supabase/core/components/custom_circle_proIndicator.dart';
 import 'package:e_commerce_app_supabase/core/components/product_list.dart';
 import 'package:e_commerce_app_supabase/core/functions/app_colors.dart';
 import 'package:e_commerce_app_supabase/views/home/logic/cubit/home_cubit.dart';
@@ -26,12 +27,6 @@ class _SearchViewState extends State<SearchView> {
     }
   }
 
-  @override
-  void dispose() {
-    _searchController.dispose();
-    super.dispose();
-  }
-
   void _onSearchChanged(String query) {
     context.read<HomeCubit>().searchProducts(query);
   }
@@ -44,7 +39,7 @@ class _SearchViewState extends State<SearchView> {
       body: BlocBuilder<HomeCubit, HomeState>(
         builder: (context, state) {
           if (state is SearchLoading) {
-            return const Center(child: CircularProgressIndicator());
+            return CustomCircleProgIndicator();
           } else if (state is SearchSuccess) {
             final results = state.results;
             if (results.isEmpty) {
@@ -155,5 +150,11 @@ class _SearchViewState extends State<SearchView> {
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
   }
 }

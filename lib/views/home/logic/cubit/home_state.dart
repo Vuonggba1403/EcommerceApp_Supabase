@@ -4,7 +4,7 @@ abstract class HomeState {}
 
 class HomeCubitInitial extends HomeState {}
 
-// Loading data from API
+/// --- Lấy dữ liệu ---
 class GetDataLoading extends HomeState {}
 
 class GetDataSuccess extends HomeState {
@@ -12,9 +12,12 @@ class GetDataSuccess extends HomeState {
   GetDataSuccess(this.products);
 }
 
-class GetDataFailure extends HomeState {}
+class GetDataFailure extends HomeState {
+  final String error;
+  GetDataFailure(this.error);
+}
 
-// Search States
+/// --- Search ---
 class SearchLoading extends HomeState {}
 
 class SearchSuccess extends HomeState {
@@ -23,3 +26,11 @@ class SearchSuccess extends HomeState {
 }
 
 class SearchCleared extends HomeState {}
+
+/// --- Filter theo Category ---
+class CategoryFilterLoading extends HomeState {}
+
+class CategoryFilterSuccess extends HomeState {
+  final List<ProductModel> filtered;
+  CategoryFilterSuccess(this.filtered);
+}
