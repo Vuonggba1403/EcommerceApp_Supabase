@@ -34,3 +34,15 @@ class CategoryFilterSuccess extends HomeState {
   final List<ProductModel> filtered;
   CategoryFilterSuccess(this.filtered);
 }
+
+final class addToFavoriteSuccess extends HomeState {}
+
+final class addToFavoriteLoading extends HomeState {}
+
+final class addToFavoriteFailure extends HomeState {}
+
+final class removeFromFavoriteLoading extends HomeState {}
+
+final class removeFromFavoriteSuccess extends HomeState {}
+
+final class removeFromFavoriteFailure extends HomeState {}

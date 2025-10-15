@@ -48,6 +48,8 @@ class ProductModel {
         .toList(),
   );
 
+  int? get length => null;
+
   Map<String, dynamic> toJson() => {
     'product_id': productId,
     'created_at': createdAt?.toIso8601String(),
