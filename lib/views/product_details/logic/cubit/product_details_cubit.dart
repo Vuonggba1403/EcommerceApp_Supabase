@@ -16,6 +16,53 @@ class ProductDetailsCubit extends Cubit<ProductDetailsState> {
   List<RateModels> rates = [];
   int averageRate = 0;
   int userRate = 5;
+  bool isFavorite = false;
+
+  // Kiểm tra trạng thái yêu thích của sản phẩm
+  Future<void> checkFavoriteStatus({required String productId}) async {
+    try {
+      Response response = await _apiServices.getData(
+        "favorite_products?select=*&for_user=eq.$userID&for_product=eq.$productId",
+      );
+      isFavorite = (response.data as List).isNotEmpty;
+      emit(FavoriteStatusChanged(isFavorite));
+    } catch (e) {
+      log("Error checking favorite status: $e");
+    }
+  }
+
+  // Thêm vào yêu thích
+  Future<void> addToFavorite(String productId) async {
+    emit(AddToFavoriteLoading());
+    try {
+      await _apiServices.postData("favorite_products", {
+        "is_favorite": true,
+        "for_user": userID,
+        "for_product": productId,
+      });
+      isFavorite = true;
+      emit(AddToFavoriteSuccess());
+    } catch (e) {
+      log(e.toString());
+      emit(AddToFavoriteFailure());
+    }
+  }
+
+  // Xóa khỏi yêu thích
+  Future<void> removeFromFavorite(String productId) async {
+    emit(RemoveFromFavoriteLoading());
+    try {
+      await _apiServices.deleteData(
+        "favorite_products?for_user=eq.$userID&for_product=eq.$productId",
+      );
+      isFavorite = false;
+      emit(RemoveFromFavoriteSuccess());
+    } catch (e) {
+      log(e.toString());
+      emit(RemoveFromFavoriteFailure());
+    }
+  }
+
   Future<void> getRates({required String productId}) async {
     emit(GetRateLoading());
     try {
@@ -33,11 +80,9 @@ class ProductDetailsCubit extends Cubit<ProductDetailsState> {
       _getAverageRate();
       // Lọc ra danh sách rate của riêng người dùng hiện tại (theo userId Supabase)
       _getUserRate();
-      // // Log ra để kiểm tra
-      // log("userRate Length = ${userRates.length}");
-      // log("rate.forUser = ${rates[0].forUser}");
-      // log("userID = ${Supabase.instance.client.auth.currentUser!.id}");
-      // log("User rate is $userRate"); // Số sao user hiện tại đã đánh giá
+
+      // Kiểm tra trạng thái yêu thích
+      await checkFavoriteStatus(productId: productId);
 
       emit(GetRateSuccess()); // Thành công → UI hiển thị được
     } catch (e) {

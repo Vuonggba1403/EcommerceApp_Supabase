@@ -60,6 +60,23 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
               backgroundColor: AppColors.primaryColor,
               elevation: 0,
               foregroundColor: AppColors.secondColor,
+              actions: [
+                // Icon yêu thích trong AppBar
+                IconButton(
+                  onPressed: () async {
+                    final productId = widget.product.productId ?? "";
+                    if (cubit.isFavorite) {
+                      await cubit.removeFromFavorite(productId);
+                    } else {
+                      await cubit.addToFavorite(productId);
+                    }
+                  },
+                  icon: Icon(
+                    cubit.isFavorite ? Icons.favorite : Icons.favorite_border,
+                    color: cubit.isFavorite ? Colors.red : Colors.white,
+                  ),
+                ),
+              ],
             ),
             body: state is GetRateLoading || state is AddCommentLoading
                 ? CustomCircleProgIndicator()
@@ -148,7 +165,21 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                   Icon(Icons.star, color: Colors.amber, size: 20),
                 ],
               ),
-              Icon(Icons.favorite, color: Colors.grey),
+              // Icon yêu thích có thể tương tác
+              GestureDetector(
+                onTap: () async {
+                  final productId = widget.product.productId ?? "";
+                  if (cubit.isFavorite) {
+                    await cubit.removeFromFavorite(productId);
+                  } else {
+                    await cubit.addToFavorite(productId);
+                  }
+                },
+                child: Icon(
+                  cubit.isFavorite ? Icons.favorite : Icons.favorite_border,
+                  color: cubit.isFavorite ? Colors.red : Colors.grey,
+                ),
+              ),
             ],
           ),
           // --- Rating bar ---

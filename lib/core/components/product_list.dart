@@ -34,8 +34,17 @@ class ProductList extends StatelessWidget {
               final isFav = cubit.checkIsFavorite(product.productId ?? "");
 
               return GestureDetector(
-                onTap: () =>
-                    navigateTo(context, ProductDetailsView(product: product)),
+                onTap: () async {
+                  // Đảm bảo trạng thái yêu thích được cập nhật trước khi chuyển trang
+                  await navigateTo(
+                    context,
+                    ProductDetailsView(product: product),
+                  );
+                  // Refresh lại danh sách sau khi quay về
+                  if (isFavoriteView) {
+                    cubit.getFavoriteProducts();
+                  }
+                },
                 child: Container(
                   width: size.width * 0.6,
                   margin: const EdgeInsets.symmetric(horizontal: 8.0),
