@@ -8,10 +8,21 @@ import 'package:e_commerce_app_supabase/views/product_details/ui/product_details
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class CategoriesProductView extends StatelessWidget {
+class CategoriesProductView extends StatefulWidget {
   const CategoriesProductView({super.key, required this.categoryName});
-
   final String categoryName;
+
+  @override
+  State<CategoriesProductView> createState() => _CategoriesProductViewState();
+}
+
+class _CategoriesProductViewState extends State<CategoriesProductView> {
+  @override
+  void initState() {
+    super.initState();
+    // Gọi lọc danh mục khi mở trang
+    context.read<HomeCubit>().searchByCategory(widget.categoryName);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -26,16 +37,28 @@ class CategoriesProductView extends StatelessWidget {
             children: [
               const CustomBackbutton(),
               SizedBox(height: size.height * 0.02),
-              Text(
-                categoryName,
-                style: const TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 25,
-                ),
+
+              // 🟢 Dùng BlocBuilder để hiển thị tiêu đề có số lượng
+              BlocBuilder<HomeCubit, HomeState>(
+                builder: (context, state) {
+                  int count = 0;
+
+                  if (state is CategoryFilterSuccess) {
+                    count = state.filtered.length;
+                  }
+
+                  return Text(
+                    "${widget.categoryName} ($count)",
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 25,
+                    ),
+                  );
+                },
               ),
+
               SizedBox(height: size.height * 0.02),
 
-              // 🔥 BlocBuilder lắng nghe kết quả lọc
               Expanded(
                 child: BlocBuilder<HomeCubit, HomeState>(
                   builder: (context, state) {
@@ -46,10 +69,8 @@ class CategoriesProductView extends StatelessWidget {
                       if (products.isEmpty) {
                         return const Center(child: Text("No products found"));
                       }
-
                       return gridProducts(products);
                     }
-                    // Nếu chưa có state nào, trả về rỗng
                     return const SizedBox.shrink();
                   },
                 ),
