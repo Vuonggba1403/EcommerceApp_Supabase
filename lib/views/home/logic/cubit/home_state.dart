@@ -35,8 +35,10 @@ class CategoryFilterSuccess extends HomeState {
   CategoryFilterSuccess(this.filtered);
 }
 
+// ignore: camel_case_types
 final class addToFavoriteSuccess extends HomeState {}
 
+// ignore: camel_case_types
 final class addToFavoriteLoading extends HomeState {}
 
 final class addToFavoriteFailure extends HomeState {}

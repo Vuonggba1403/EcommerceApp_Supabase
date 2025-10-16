@@ -1,7 +1,4 @@
-import 'dart:developer';
 import 'package:e_commerce_app_supabase/core/components/cache_images_view.dart';
-import 'package:e_commerce_app_supabase/core/components/custom_derlight_bar.dart';
-import 'package:e_commerce_app_supabase/core/functions/app_colors.dart';
 import 'package:e_commerce_app_supabase/core/functions/format_currency.dart';
 import 'package:e_commerce_app_supabase/core/functions/navigate_to.dart';
 import 'package:e_commerce_app_supabase/core/models/product_model/product_model.dart';
@@ -11,8 +8,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ProductList extends StatelessWidget {
-  const ProductList({super.key, required this.products});
+  const ProductList({
+    super.key,
+    required this.products,
+    this.isFavoriteView = false,
+  });
   final List<ProductModel> products;
+  final bool isFavoriteView;
 
   @override
   Widget build(BuildContext context) {
@@ -20,30 +22,7 @@ class ProductList extends StatelessWidget {
     final cubit = context.read<HomeCubit>();
 
     return BlocConsumer<HomeCubit, HomeState>(
-      listener: (context, state) {
-        if (state is addToFavoriteFailure ||
-            state is removeFromFavoriteFailure) {
-          showCustomDelightToastBar(
-            context,
-            "Error",
-            const Icon(Icons.error, color: Colors.white),
-          );
-        }
-        if (state is addToFavoriteSuccess) {
-          showCustomDelightToastBar(
-            context,
-            "Add Successful!",
-            const Icon(Icons.check, color: Colors.white),
-          );
-        }
-        if (state is removeFromFavoriteSuccess) {
-          showCustomDelightToastBar(
-            context,
-            "Remove Successful!",
-            const Icon(Icons.check, color: Colors.white),
-          );
-        }
-      },
+      listener: (context, state) {},
       builder: (context, state) {
         return SizedBox(
           height: size.height * 0.45,
@@ -120,9 +99,7 @@ class ProductList extends StatelessWidget {
                               },
                               child: Icon(
                                 isFav ? Icons.favorite : Icons.favorite_border,
-                                color: isFav
-                                    ? Colors.red
-                                    : AppColors.secondColor,
+                                color: isFav ? Colors.red : Colors.grey,
                               ),
                             ),
                           ),

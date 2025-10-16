@@ -9,80 +9,77 @@ import 'package:e_commerce_app_supabase/views/cart/ui/cart_view.dart';
 import 'package:e_commerce_app_supabase/views/favorite/ui/favorite_view.dart';
 import 'package:e_commerce_app_supabase/views/home/ui/home_view.dart';
 import 'package:e_commerce_app_supabase/views/profiles/ui/profile_view.dart';
+import 'package:e_commerce_app_supabase/views/home/logic/cubit/home_cubit.dart';
 
 class MainHomeView extends StatefulWidget {
   const MainHomeView({Key? key}) : super(key: key);
-
-  final List<Widget> views = const [
-    HomeView(), // ✅ Không truyền query
-    FavoriteView(),
-    CartView(),
-    ProfileView(),
-  ];
 
   @override
   State<MainHomeView> createState() => _MainHomeViewState();
 }
 
 class _MainHomeViewState extends State<MainHomeView> {
+  final List<Widget> _views = const [
+    HomeView(),
+    FavoriteView(),
+    CartView(),
+    ProfileView(),
+  ];
+
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => NavBarCubit(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (_) => NavBarCubit()),
+        BlocProvider(
+          create: (_) => HomeCubit()..getProducts(),
+        ), // Load sản phẩm ngay
+      ],
       child: BlocBuilder<NavBarCubit, NavBarState>(
         builder: (context, state) {
-          NavBarCubit cubit = BlocProvider.of<NavBarCubit>(context);
+          final navCubit = context.read<NavBarCubit>();
+
           return Scaffold(
-            body: widget.views[cubit.currentIndex],
-            bottomNavigationBar: Container(
-              height: 80,
-              decoration: BoxDecoration(color: Colors.white),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(
-                  vertical: 8.0,
-                  horizontal: 9,
-                ),
-                child: GNav(
-                  onTabChange: (index) {
-                    cubit.changeCurrentIndex(index);
-                  },
-                  // animation
-                  curve: Curves.easeOutExpo,
-                  duration: const Duration(milliseconds: 200),
-                  // layout
-                  gap: 8,
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 20,
-                    vertical: 12,
-                  ),
-                  tabBorderRadius: 20,
-                  tabMargin: const EdgeInsets.symmetric(horizontal: 4),
-
-                  color: Colors.grey[600],
-                  activeColor: Colors.white,
-                  textStyle: const TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w600,
-                  ),
-
-                  // nền tab active → pill gradient
-                  tabBackgroundGradient: const LinearGradient(
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                    colors: [Color(0xFF9CECFB), AppColors.primaryColor],
-                  ),
-
-                  tabs: const [
-                    GButton(icon: Icons.home, text: 'Home'),
-                    GButton(icon: Icons.favorite_border, text: 'Likes'),
-                    GButton(icon: Icons.shopping_bag_outlined, text: 'Cart'),
-                    GButton(icon: Icons.person, text: 'Profile'),
-                  ],
-                ),
-              ),
-            ),
+            body: _views[navCubit.currentIndex],
+            bottomNavigationBar: _buildBottomNav(navCubit),
           );
         },
+      ),
+    );
+  }
+
+  Widget _buildBottomNav(NavBarCubit cubit) {
+    return Container(
+      height: 80,
+      decoration: const BoxDecoration(color: Colors.white),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 9),
+        child: GNav(
+          onTabChange: (index) => cubit.changeCurrentIndex(index),
+          curve: Curves.easeOutExpo,
+          duration: const Duration(milliseconds: 200),
+          gap: 8,
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+          tabBorderRadius: 20,
+          tabMargin: const EdgeInsets.symmetric(horizontal: 4),
+          color: Colors.grey[600],
+          activeColor: Colors.white,
+          textStyle: const TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.w600,
+          ),
+          tabBackgroundGradient: const LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [Color(0xFF9CECFB), AppColors.primaryColor],
+          ),
+          tabs: const [
+            GButton(icon: Icons.home, text: 'Home'),
+            GButton(icon: Icons.favorite_border, text: 'Likes'),
+            GButton(icon: Icons.shopping_bag_outlined, text: 'Cart'),
+            GButton(icon: Icons.person, text: 'Profile'),
+          ],
+        ),
       ),
     );
   }

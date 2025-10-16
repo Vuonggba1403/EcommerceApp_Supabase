@@ -28,9 +28,14 @@ class HomeCubit extends Cubit<HomeState> {
           .map((product) => ProductModel.fromJson(product))
           .toList();
 
+      // 🩶 Sau khi có dữ liệu sản phẩm, cập nhật danh sách yêu thích
+      favoriteProducts.clear();
+      favoriteProductList.clear();
+      getFavoriteProducts();
+
       emit(GetDataSuccess(products));
     } catch (e) {
-      log("❌ Error fetching products: $e");
+      // log("❌ Error fetching products: $e");
       emit(GetDataFailure(e.toString()));
     }
   }
@@ -88,8 +93,17 @@ class HomeCubit extends Cubit<HomeState> {
         "for_user": userId,
         "for_product": productId,
       });
-      // await getProducts();
       favoriteProducts.addAll({productId: true});
+
+      // Cập nhật favoriteProductList
+      final product = products.firstWhere(
+        (p) => p.productId == productId,
+        orElse: () => products.first,
+      );
+      if (!favoriteProductList.contains(product)) {
+        favoriteProductList.add(product);
+      }
+
       emit(addToFavoriteSuccess());
     } catch (e) {
       log(e.toString());
@@ -110,6 +124,10 @@ class HomeCubit extends Cubit<HomeState> {
         "favorite_products?for_user=eq.$userId&for_product=eq.$productId",
       );
       favoriteProducts.removeWhere((key, value) => key == productId);
+
+      // Cập nhật favoriteProductList
+      favoriteProductList.removeWhere((p) => p.productId == productId);
+
       emit(removeFromFavoriteSuccess());
     } catch (e) {
       log(e.toString());
@@ -120,15 +138,14 @@ class HomeCubit extends Cubit<HomeState> {
   // get favorite products
   List<ProductModel> favoriteProductList = [];
   void getFavoriteProducts() {
+    favoriteProductList.clear(); // ✅ Xóa list cũ
+    favoriteProducts.clear();
+
     for (ProductModel product in products) {
       if (product.favoriteProducts != null &&
-          product.favoriteProducts!.isNotEmpty) {
-        for (FavoriteProduct favoriteProduct in product.favoriteProducts!) {
-          if (favoriteProduct.forUser == userId) {
-            favoriteProductList.add(product);
-            favoriteProducts.addAll({product.productId!: true});
-          }
-        }
+          product.favoriteProducts!.any((f) => f.forUser == userId)) {
+        favoriteProductList.add(product); // ✅ Thêm chỉ 1 lần
+        favoriteProducts[product.productId!] = true; // Map check nhanh
       }
     }
   }
