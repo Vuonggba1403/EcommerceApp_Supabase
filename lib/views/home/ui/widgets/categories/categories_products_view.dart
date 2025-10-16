@@ -1,6 +1,7 @@
 import 'package:e_commerce_app_supabase/core/components/cache_images_view.dart';
 import 'package:e_commerce_app_supabase/core/components/custom_backbutton.dart';
 import 'package:e_commerce_app_supabase/core/components/custom_circle_proIndicator.dart';
+import 'package:e_commerce_app_supabase/core/components/grid_product_view.dart';
 import 'package:e_commerce_app_supabase/core/functions/navigate_to.dart';
 import 'package:e_commerce_app_supabase/core/models/product_model/product_model.dart';
 import 'package:e_commerce_app_supabase/views/home/logic/cubit/home_cubit.dart';
@@ -79,82 +80,6 @@ class _CategoriesProductViewState extends State<CategoriesProductView> {
           ),
         ),
       ),
-    );
-  }
-
-  GridView gridProducts(List<ProductModel> products) {
-    return GridView.builder(
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
-        childAspectRatio: 0.75,
-        crossAxisSpacing: 10,
-        mainAxisSpacing: 10,
-      ),
-      itemCount: products.length,
-      itemBuilder: (context, index) {
-        final p = products[index];
-        return GestureDetector(
-          onTap: () {
-            navigateTo(context, ProductDetailsView(product: p));
-          },
-          child: Container(
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(12),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.grey.withOpacity(0.1),
-                  spreadRadius: 1,
-                  blurRadius: 5,
-                  offset: const Offset(0, 2),
-                ),
-              ],
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Expanded(
-                  flex: 3,
-                  child: ClipRRect(
-                    borderRadius: const BorderRadius.vertical(
-                      top: Radius.circular(12),
-                    ),
-                    child: CacheImage(url: p.imageUrl ?? ''),
-                  ),
-                ),
-                Expanded(
-                  flex: 2,
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          p.productName ?? 'No name',
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                          style: const TextStyle(
-                            fontSize: 12,
-                            color: Colors.black87,
-                          ),
-                        ),
-                        Text(
-                          "\$${p.price ?? 0}",
-                          style: const TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 14,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        );
-      },
     );
   }
 }

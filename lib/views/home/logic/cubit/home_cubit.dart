@@ -137,16 +137,29 @@ class HomeCubit extends Cubit<HomeState> {
 
   // get favorite products
   List<ProductModel> favoriteProductList = [];
-  void getFavoriteProducts() {
-    favoriteProductList.clear(); // ✅ Xóa list cũ
+  Future<void> getFavoriteProducts() async {
+    emit(GetDataLoading());
+    favoriteProductList.clear();
     favoriteProducts.clear();
 
-    for (ProductModel product in products) {
-      if (product.favoriteProducts != null &&
-          product.favoriteProducts!.any((f) => f.forUser == userId)) {
-        favoriteProductList.add(product); // ✅ Thêm chỉ 1 lần
-        favoriteProducts[product.productId!] = true; // Map check nhanh
+    try {
+      // 🔄 Fetch lại dữ liệu từ Supabase (không dùng products list cũ)
+      final response = await _apiServices.getData(
+        "favorite_products?select=for_product(*),*&for_user=eq.$userId",
+      );
+
+      for (var favorite in response.data as List) {
+        if (favorite['for_product'] != null) {
+          final product = ProductModel.fromJson(favorite['for_product']);
+          favoriteProductList.add(product);
+          favoriteProducts[product.productId!] = true;
+        }
       }
+
+      emit(GetDataSuccess(favoriteProductList));
+    } catch (e) {
+      log("❌ Error fetching favorites: $e");
+      emit(GetDataFailure(e.toString()));
     }
   }
 }
