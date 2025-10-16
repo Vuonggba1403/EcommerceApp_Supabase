@@ -93,7 +93,7 @@ GridView gridProducts(List<ProductModel> products) {
                             ),
                           ),
                           Text(
-                            "\$${p.price ?? 0}",
+                            "${p.price ?? 0} VND",
                             style: const TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 14,

@@ -16,16 +16,19 @@ class ProductDetailsCubit extends Cubit<ProductDetailsState> {
   List<RateModels> rates = [];
   int averageRate = 0;
   int userRate = 5;
-  bool isFavorite = false;
+  bool isFavorite = false; // Biến lưu trạng thái yêu thích cục bộ
 
   // Kiểm tra trạng thái yêu thích của sản phẩm
   Future<void> checkFavoriteStatus({required String productId}) async {
     try {
+      // 🔹 Query database để kiểm tra
       Response response = await _apiServices.getData(
         "favorite_products?select=*&for_user=eq.$userID&for_product=eq.$productId",
       );
+      // Nếu response.data không rỗng → Sản phẩm đã được yêu thích
       isFavorite = (response.data as List).isNotEmpty;
-      emit(FavoriteStatusChanged(isFavorite));
+
+      emit(FavoriteStatusChanged(isFavorite)); // Cập nhật UI
     } catch (e) {
       log("Error checking favorite status: $e");
     }
@@ -81,7 +84,7 @@ class ProductDetailsCubit extends Cubit<ProductDetailsState> {
       // Lọc ra danh sách rate của riêng người dùng hiện tại (theo userId Supabase)
       _getUserRate();
 
-      // Kiểm tra trạng thái yêu thích
+      // 🔹 Kiểm tra trạng thái yêu thích sau khi load xong ratings
       await checkFavoriteStatus(productId: productId);
 
       emit(GetRateSuccess()); // Thành công → UI hiển thị được

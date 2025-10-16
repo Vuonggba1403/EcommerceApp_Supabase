@@ -66,8 +66,10 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                   onPressed: () async {
                     final productId = widget.product.productId ?? "";
                     if (cubit.isFavorite) {
+                      // Đang yêu thích → Xóa
                       await cubit.removeFromFavorite(productId);
                     } else {
+                      // Chưa yêu thích → Thêm
                       await cubit.addToFavorite(productId);
                     }
                   },
@@ -157,29 +159,10 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
           DescriptionSection(description: widget.product.description ?? ''),
           const Divider(height: 40, thickness: 2),
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              Row(
-                children: [
-                  Text("${cubit.averageRate}"),
-                  Icon(Icons.star, color: Colors.amber, size: 20),
-                ],
-              ),
-              // Icon yêu thích có thể tương tác
-              GestureDetector(
-                onTap: () async {
-                  final productId = widget.product.productId ?? "";
-                  if (cubit.isFavorite) {
-                    await cubit.removeFromFavorite(productId);
-                  } else {
-                    await cubit.addToFavorite(productId);
-                  }
-                },
-                child: Icon(
-                  cubit.isFavorite ? Icons.favorite : Icons.favorite_border,
-                  color: cubit.isFavorite ? Colors.red : Colors.grey,
-                ),
-              ),
+              Text("${cubit.averageRate}"),
+              Icon(Icons.star, color: Colors.amber, size: 20),
             ],
           ),
           // --- Rating bar ---

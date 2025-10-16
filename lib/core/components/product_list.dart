@@ -35,14 +35,16 @@ class ProductList extends StatelessWidget {
 
               return GestureDetector(
                 onTap: () async {
-                  // Đảm bảo trạng thái yêu thích được cập nhật trước khi chuyển trang
+                  // Chuyển sang ProductDetailsView
                   await navigateTo(
                     context,
                     ProductDetailsView(product: product),
                   );
-                  // Refresh lại danh sách sau khi quay về
+
+                  // 🔹 Khi người dùng quay lại, refresh danh sách yêu thích
                   if (isFavoriteView) {
                     cubit.getFavoriteProducts();
+                    // Load lại dữ liệu từ Supabase để đảm bảo đồng bộ
                   }
                 },
                 child: Container(
