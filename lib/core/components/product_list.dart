@@ -12,7 +12,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ProductList extends StatelessWidget {
   const ProductList({super.key, required this.products});
-
   final List<ProductModel> products;
 
   @override
@@ -20,47 +19,44 @@ class ProductList extends StatelessWidget {
     final size = MediaQuery.of(context).size;
     final cubit = context.read<HomeCubit>();
 
-    return SizedBox(
-      height: size.height * 0.45,
-      child: ListView.builder(
-        scrollDirection: Axis.horizontal,
-        itemCount: products.length,
-        itemBuilder: (context, index) {
-          final product = products[index];
-
-          return BlocConsumer<HomeCubit, HomeState>(
-            listener: (BuildContext context, HomeState state) {
-              if (state is addToFavoriteFailure ||
-                  state is removeFromFavoriteFailure) {
-                showCustomDelightToastBar(
-                  context,
-                  "Error",
-                  Icon(Icons.error, color: Colors.white),
-                );
-              }
-              if (state is addToFavoriteSuccess) {
-                showCustomDelightToastBar(
-                  context,
-                  "Add Successful !",
-                  Icon(Icons.check, color: Colors.white),
-                );
-              }
-              if (state is removeFromFavoriteSuccess) {
-                showCustomDelightToastBar(
-                  context,
-                  "Remove Successful !",
-                  Icon(Icons.check, color: Colors.white),
-                );
-              }
-            },
-            builder: (context, state) {
+    return BlocConsumer<HomeCubit, HomeState>(
+      listener: (context, state) {
+        if (state is addToFavoriteFailure ||
+            state is removeFromFavoriteFailure) {
+          showCustomDelightToastBar(
+            context,
+            "Error",
+            const Icon(Icons.error, color: Colors.white),
+          );
+        }
+        if (state is addToFavoriteSuccess) {
+          showCustomDelightToastBar(
+            context,
+            "Add Successful!",
+            const Icon(Icons.check, color: Colors.white),
+          );
+        }
+        if (state is removeFromFavoriteSuccess) {
+          showCustomDelightToastBar(
+            context,
+            "Remove Successful!",
+            const Icon(Icons.check, color: Colors.white),
+          );
+        }
+      },
+      builder: (context, state) {
+        return SizedBox(
+          height: size.height * 0.45,
+          child: ListView.builder(
+            scrollDirection: Axis.horizontal,
+            itemCount: products.length,
+            itemBuilder: (context, index) {
+              final product = products[index];
               final isFav = cubit.checkIsFavorite(product.productId ?? "");
 
               return GestureDetector(
-                onTap: () {
-                  log("Clicked on: ${product.productName}");
-                  navigateTo(context, ProductDetailsView(product: product));
-                },
+                onTap: () =>
+                    navigateTo(context, ProductDetailsView(product: product)),
                 child: Container(
                   width: size.width * 0.6,
                   margin: const EdgeInsets.symmetric(horizontal: 8.0),
@@ -78,7 +74,7 @@ class ProductList extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      // --- Product Image + Sale Tag + Favorite ---
+                      // --- Image + Sale + Favorite ---
                       Stack(
                         children: [
                           ClipRRect(
@@ -87,8 +83,6 @@ class ProductList extends StatelessWidget {
                             ),
                             child: CacheImage(url: product.imageUrl ?? ''),
                           ),
-
-                          // Sale tag
                           if (product.sale != null && product.sale!.isNotEmpty)
                             Positioned(
                               top: 8,
@@ -112,15 +106,12 @@ class ProductList extends StatelessWidget {
                                 ),
                               ),
                             ),
-
-                          // Favorite icon ❤️
                           Positioned(
                             top: 8,
                             right: 8,
                             child: GestureDetector(
                               onTap: () async {
                                 final id = product.productId ?? "";
-
                                 if (cubit.checkIsFavorite(id)) {
                                   await cubit.removeFromFavorite(id);
                                 } else {
@@ -138,8 +129,6 @@ class ProductList extends StatelessWidget {
                         ],
                       ),
                       const SizedBox(height: 8),
-
-                      // Product name
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 8),
                         child: Text(
@@ -149,8 +138,6 @@ class ProductList extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(height: 4),
-
-                      // Product price
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 8),
                         child: Row(
@@ -176,9 +163,9 @@ class ProductList extends StatelessWidget {
                 ),
               );
             },
-          );
-        },
-      ),
+          ),
+        );
+      },
     );
   }
 }

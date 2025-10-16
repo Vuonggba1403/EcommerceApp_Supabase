@@ -2,6 +2,7 @@ import 'dart:developer';
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:e_commerce_app_supabase/core/functions/api_services.dart';
+import 'package:e_commerce_app_supabase/core/models/product_model/favorite_product.dart';
 import 'package:e_commerce_app_supabase/core/models/product_model/product_model.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -101,7 +102,7 @@ class HomeCubit extends Cubit<HomeState> {
     return favoriteProducts.containsKey(productId);
   }
 
-  /// 💔 Xóa sản phẩm khỏi danh sách yêu thích
+  /// remove From Favorite
   Future<void> removeFromFavorite(String productId) async {
     emit(removeFromFavoriteLoading());
     try {
@@ -113,6 +114,22 @@ class HomeCubit extends Cubit<HomeState> {
     } catch (e) {
       log(e.toString());
       emit(removeFromFavoriteFailure());
+    }
+  }
+
+  // get favorite products
+  List<ProductModel> favoriteProductList = [];
+  void getFavoriteProducts() {
+    for (ProductModel product in products) {
+      if (product.favoriteProducts != null &&
+          product.favoriteProducts!.isNotEmpty) {
+        for (FavoriteProduct favoriteProduct in product.favoriteProducts!) {
+          if (favoriteProduct.forUser == userId) {
+            favoriteProductList.add(product);
+            favoriteProducts.addAll({product.productId!: true});
+          }
+        }
+      }
     }
   }
 }
